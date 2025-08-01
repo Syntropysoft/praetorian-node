@@ -1,0 +1,84 @@
+# Insecure Application Configuration - Security Audit Example
+app:
+  name: "insecure-application"
+  version: "1.0.0"
+  environment: "production"
+
+# Database Configuration - Insecure
+database:
+  host: "prod-db.example.com"
+  port: 5432
+  name: "insecure_app_prod"
+  credentials:
+    username: "admin"  # ❌ Error: Using admin user
+    password: "super_secret_password_123"  # ❌ Error: Hardcoded secret
+    ssl: false  # ❌ Error: SSL disabled
+    sslMode: "disable"  # ❌ Error: SSL mode disabled
+
+# Security Configuration - Insecure
+security:
+  cors:
+    origin: "*"  # ❌ Error: Wildcard CORS - too permissive
+    credentials: true
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    allowedHeaders: ["*"]  # ❌ Error: Wildcard headers - too permissive
+  
+  headers:
+    x-frame-options: "SAMEORIGIN"  # ❌ Error: Should be DENY
+    # ❌ Error: Missing critical security headers
+    # x-content-type-options: "nosniff"
+    # x-xss-protection: "1; mode=block"
+    # strict-transport-security: "max-age=31536000; includeSubDomains"
+    # content-security-policy: "default-src 'self'"
+  
+  authentication:
+    jwt:
+      secret: "my_super_secret_jwt_key_that_is_hardcoded"  # ❌ Error: Hardcoded JWT secret
+      expiresIn: "24h"  # ❌ Error: Too long expiration
+      refreshExpiresIn: "30d"  # ❌ Error: Too long refresh expiration
+      issuer: "insecure-app"
+      audience: "*"  # ❌ Error: Wildcard audience
+    
+    bcrypt:
+      rounds: 8  # ❌ Error: Too few rounds (should be 12+)
+    
+    rateLimit:
+      windowMs: 900000
+      max: 1000  # ❌ Error: Too high rate limit
+      message: "Too many requests"
+  
+  encryption:
+    algorithm: "aes-128-ecb"  # ❌ Error: Weak encryption algorithm
+    key: "my_encryption_key_123"  # ❌ Error: Hardcoded encryption key
+
+# Logging Configuration - Insecure
+logging:
+  level: "debug"  # ❌ Error: Debug level in production
+  format: "text"  # ❌ Error: Should be JSON for security
+  output: "console"  # ❌ Error: Console output in production
+  file:
+    filename: "./app.log"  # ❌ Error: Relative path and no rotation
+    maxsize: "1MB"  # ❌ Error: Too small
+    maxFiles: 1  # ❌ Error: No log rotation
+  
+  # Security events logging disabled
+  security:
+    enabled: false  # ❌ Error: Security logging disabled
+    level: "info"
+    events: []
+
+# Monitoring Configuration - Insecure
+monitoring:
+  enabled: true
+  metrics:
+    enabled: true
+    port: 9090
+    path: "/metrics"
+    auth: false  # ❌ Error: No authentication for metrics
+    username: "admin"  # ❌ Error: Hardcoded username
+    password: "metrics_password"  # ❌ Error: Hardcoded password
+  
+  health:
+    enabled: true
+    path: "/health"
+    auth: false  # ❌ Error: No authentication for health checks 

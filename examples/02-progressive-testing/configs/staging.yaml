@@ -1,0 +1,78 @@
+# Staging Environment Configuration - Minor Issues
+app:
+  name: "my-application"
+  version: "1.0.0"
+  environment: "staging"
+
+# Database Configuration - Minor Issues
+database:
+  host: "staging-db.example.com"
+  port: 5432
+  name: "myapp_staging"
+  credentials:
+    username: "staging_user"
+    password: "staging_password"  # ⚠️ Minor: Hardcoded secret
+    ssl: true
+    sslMode: "require"
+
+# Security Configuration - Minor Issues
+security:
+  cors:
+    origin: "*"  # ⚠️ Minor: Too permissive CORS
+    credentials: true
+    methods: ["GET", "POST", "PUT", "DELETE"]
+    allowedHeaders: ["Content-Type", "Authorization"]
+  
+  headers:
+    x-frame-options: "DENY"
+    x-content-type-options: "nosniff"
+    # ⚠️ Minor: Missing some security headers
+    # x-xss-protection: "1; mode=block"
+    # strict-transport-security: "max-age=31536000; includeSubDomains"
+  
+  authentication:
+    jwt:
+      secret: "${JWT_SECRET}"  # ✅ Using environment variable
+      expiresIn: "1h"
+      refreshExpiresIn: "7d"
+      issuer: "myapp-staging"
+      audience: "myapp-staging-users"
+    
+    bcrypt:
+      rounds: 12
+    
+    rateLimit:
+      windowMs: 900000
+      max: 100
+      message: "Too many requests from this IP"
+  
+  encryption:
+    algorithm: "aes-256-gcm"
+    key: "${ENCRYPTION_KEY}"  # ✅ Using environment variable
+
+# Logging Configuration - Minor Issues
+logging:
+  level: "info"
+  format: "json"
+  output: "file"
+  file:
+    filename: "/var/log/myapp/app.log"
+    maxsize: "10MB"
+    maxFiles: 5
+    compress: true
+
+# Monitoring Configuration - Minor Issues
+monitoring:
+  enabled: true
+  metrics:
+    enabled: true
+    port: 9090
+    path: "/metrics"
+    auth: false  # ⚠️ Minor: No authentication for metrics
+    username: "admin"  # ⚠️ Minor: Hardcoded username
+    password: "metrics_password"  # ⚠️ Minor: Hardcoded password
+  
+  health:
+    enabled: true
+    path: "/health"
+    auth: false  # ⚠️ Minor: No authentication for health checks 

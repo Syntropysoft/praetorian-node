@@ -57,7 +57,7 @@ export abstract class BasePlugin {
         if (result.success) {
           metadata['rulesPassed']++;
         } else {
-          if (rule.severity === 'error' || rule.severity === 'critical') {
+          if (rule.severity === 'error') {
             errors.push(...result.errors);
           } else {
             warnings.push(...result.warnings);

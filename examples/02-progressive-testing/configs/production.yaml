@@ -1,0 +1,80 @@
+# Production Environment Configuration - Critical Errors
+app:
+  name: "my-application"
+  version: "1.0.0"
+  environment: "production"
+
+# Database Configuration - Critical Errors
+database:
+  host: "prod-db.example.com"
+  port: "5432"  # ❌ Critical: Should be number, not string
+  name: "myapp_prod"
+  credentials:
+    username: "admin"  # ❌ Critical: Using admin user
+    password: "super_secret_prod_password"  # ❌ Critical: Hardcoded secret
+    ssl: false  # ❌ Critical: SSL disabled in production
+    sslMode: "disable"  # ❌ Critical: SSL mode disabled
+
+# Security Configuration - Critical Errors
+security:
+  cors:
+    origin: "*"  # ❌ Critical: Wildcard CORS in production
+    credentials: "true"  # ❌ Critical: Should be boolean, not string
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    allowedHeaders: ["*"]  # ❌ Critical: Wildcard headers in production
+  
+  headers:
+    x-frame-options: "SAMEORIGIN"  # ❌ Critical: Should be DENY
+    # ❌ Critical: Missing ALL security headers
+    # x-content-type-options: "nosniff"
+    # x-xss-protection: "1; mode=block"
+    # strict-transport-security: "max-age=31536000; includeSubDomains"
+    # content-security-policy: "default-src 'self'"
+    # referrer-policy: "strict-origin-when-cross-origin"
+  
+  authentication:
+    jwt:
+      secret: "hardcoded_jwt_secret_for_production"  # ❌ Critical: Hardcoded JWT secret
+      expiresIn: "30d"  # ❌ Critical: Too long expiration
+      refreshExpiresIn: "90d"  # ❌ Critical: Too long refresh expiration
+      issuer: "myapp-prod"
+      audience: "*"  # ❌ Critical: Wildcard audience
+    
+    bcrypt:
+      rounds: 8  # ❌ Critical: Too few rounds (should be 12+)
+    
+    rateLimit:
+      windowMs: 900000
+      max: 10000  # ❌ Critical: Too high rate limit
+      message: "Too many requests"
+  
+  encryption:
+    algorithm: "aes-128-ecb"  # ❌ Critical: Weak encryption algorithm
+    key: "hardcoded_encryption_key_123"  # ❌ Critical: Hardcoded encryption key
+
+# Logging Configuration - Critical Errors
+logging:
+  level: "invalid_level"  # ❌ Critical: Invalid log level
+  format: "text"  # ❌ Critical: Should be JSON for production
+  output: "console"  # ❌ Critical: Console output in production
+  file:
+    filename: "./app.log"  # ❌ Critical: Relative path and no rotation
+    maxsize: "1MB"  # ❌ Critical: Too small
+    maxFiles: 1  # ❌ Critical: No log rotation
+    # ❌ Critical: Missing compression configuration
+
+# Monitoring Configuration - Critical Errors
+monitoring:
+  enabled: "true"  # ❌ Critical: Should be boolean, not string
+  metrics:
+    enabled: true
+    port: 9090
+    path: "/metrics"
+    auth: false  # ❌ Critical: No authentication for metrics
+    username: "admin"  # ❌ Critical: Hardcoded username
+    password: "metrics_password"  # ❌ Critical: Hardcoded password
+  
+  health:
+    enabled: true
+    path: "/health"
+    auth: false  # ❌ Critical: No authentication for health checks 

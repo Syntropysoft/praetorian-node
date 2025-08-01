@@ -1,0 +1,26 @@
+# SyntropyLog Production Configuration
+appName: "my-syntropylog-app"
+environment: "production"
+logLevel: "warn"
+
+# Broker configuration
+brokers:
+  nats:
+    enabled: true
+    url: "nats://prod-nats-cluster:4222"
+
+# Redis configuration
+redis:
+  enabled: true
+  url: "redis://prod-redis-cluster:6379"
+
+# HTTP configuration
+http:
+  enabled: true
+  port: 3000
+
+# Logging configuration
+logging:
+  transports:
+    - type: "console"
+      format: "json" 

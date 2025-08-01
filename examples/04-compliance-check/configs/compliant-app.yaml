@@ -1,0 +1,121 @@
+# Compliant Application Configuration - Compliance Check Example
+app:
+  name: "compliant-application"
+  version: "1.0.0"
+  environment: "production"
+  description: "Application that meets compliance standards"
+  maintainer: "security@company.com"
+  license: "MIT"
+
+# Database Configuration - Compliant
+database:
+  host: "prod-db.example.com"
+  port: 5432
+  name: "compliant_app_prod"
+  credentials:
+    username: "app_user"
+    password: "${DB_PASSWORD}"  # ✅ Using environment variable
+    ssl: true
+    sslMode: "require"
+    connectionTimeout: 30000
+    idleTimeout: 30000
+  
+  # Backup configuration
+  backup:
+    enabled: true
+    schedule: "0 2 * * *"  # Daily at 2 AM
+    retention: "30d"
+    encryption: true
+
+# Security Configuration - Compliant
+security:
+  cors:
+    origin: ["https://myapp.com", "https://admin.myapp.com"]
+    credentials: true
+    methods: ["GET", "POST", "PUT", "DELETE"]
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"]
+    maxAge: 86400
+  
+  headers:
+    x-frame-options: "DENY"
+    x-content-type-options: "nosniff"
+    x-xss-protection: "1; mode=block"
+    strict-transport-security: "max-age=31536000; includeSubDomains; preload"
+    content-security-policy: "default-src 'self'; script-src 'self' 'unsafe-inline'"
+    referrer-policy: "strict-origin-when-cross-origin"
+  
+  authentication:
+    jwt:
+      secret: "${JWT_SECRET}"  # ✅ Using environment variable
+      expiresIn: "1h"
+      refreshExpiresIn: "7d"
+      issuer: "compliant-app"
+      audience: "compliant-app-users"
+    
+    bcrypt:
+      rounds: 12
+    
+    rateLimit:
+      windowMs: 900000
+      max: 100
+      message: "Too many requests from this IP"
+  
+  encryption:
+    algorithm: "aes-256-gcm"
+    key: "${ENCRYPTION_KEY}"  # ✅ Using environment variable
+
+# Logging Configuration - Compliant
+logging:
+  level: "info"
+  format: "json"
+  output: "file"
+  file:
+    filename: "/var/log/compliant-app/app.log"
+    maxsize: "10MB"
+    maxFiles: 30
+    compress: true
+  
+  # Audit logging for compliance
+  audit:
+    enabled: true
+    level: "info"
+    events: ["auth", "access", "data_access", "admin_actions"]
+    retention: "7y"  # 7 years for compliance
+
+# Monitoring Configuration - Compliant
+monitoring:
+  enabled: true
+  metrics:
+    enabled: true
+    port: 9090
+    path: "/metrics"
+    auth: true
+    username: "${METRICS_USER}"  # ✅ Using environment variable
+    password: "${METRICS_PASSWORD}"  # ✅ Using environment variable
+  
+  health:
+    enabled: true
+    path: "/health"
+    auth: true
+    checks: ["database", "redis", "external_apis"]
+
+# Compliance Configuration
+compliance:
+  gdpr:
+    enabled: true
+    dataRetention: "7y"
+    dataEncryption: true
+    userConsent: true
+    dataPortability: true
+  
+  soc2:
+    enabled: true
+    controls: ["CC1", "CC2", "CC3", "CC4", "CC5", "CC6", "CC7", "CC8", "CC9"]
+    monitoring: true
+    reporting: true
+  
+  iso27001:
+    enabled: true
+    controls: ["A.5", "A.6", "A.7", "A.8", "A.9", "A.10", "A.11", "A.12", "A.13", "A.14", "A.15", "A.16", "A.17", "A.18"]
+    riskAssessment: true
+    incidentManagement: true 

@@ -118,11 +118,16 @@ program.exitOverride();
 
 try {
   program.parse();
-} catch (err) {
-  if (err.code === 'commander.help') {
+} catch (err: any) {
+  // Don't show error for help and version commands
+  if (err.code === 'commander.help' || err.code === 'commander.version') {
     process.exit(0);
   }
-  console.error(chalk.red('\n❌ Error:'), err.message);
+  
+  // Only show error message if it's not a help-related error
+  if (err.code !== 'commander.helpDisplayed') {
+    console.error(chalk.red('\n❌ Error:'), err.message);
+  }
   process.exit(1);
 }
 

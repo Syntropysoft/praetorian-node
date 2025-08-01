@@ -1,0 +1,35 @@
+{
+  "api": {
+    "name": "my-api",
+    "version": "1.0.0",
+    "port": "3000"  // ❌ Error: should be number, not string
+  },
+  // ❌ Error: missing required database section
+  "security": {
+    "jwt": {
+      "secret": "hardcoded_jwt_secret",  // ❌ Error: hardcoded secret
+      "expiresIn": "24h"
+    },
+    "bcrypt": {
+      "rounds": "12"  // ❌ Error: should be number, not string
+    }
+  },
+  "logging": {
+    "level": "invalid_level",  // ❌ Error: invalid level
+    "format": "json",
+    "transports": ["console", "file"],
+    "file": {
+      "filename": "logs/app.log",
+      "maxsize": "10485760",  // ❌ Error: should be number, not string
+      "maxFiles": 5
+    }
+  },
+  "monitoring": {
+    "enabled": "true",  // ❌ Error: should be boolean, not string
+    "metrics": {
+      "enabled": true,
+      "port": 9090
+    }
+  }
+  // ❌ Error: missing comma after last element
+} 

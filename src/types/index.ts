@@ -35,6 +35,19 @@ export interface ValidationRule {
   config?: Record<string, any>;
 }
 
+export interface AuditSummary {
+  score: number; // 0-100
+  grade: 'A' | 'B' | 'C' | 'D' | 'F';
+  criticalIssues: number;
+  securityIssues: number;
+  complianceIssues: number;
+  recommendations: string[];
+  totalChecks: number;
+  passedChecks: number;
+  failedChecks: number;
+  warnings: number;
+}
+
 export interface AuditResult {
   timestamp: Date;
   duration: number;
@@ -44,15 +57,6 @@ export interface AuditResult {
   warnings: number;
   results: ValidationResult[];
   summary: AuditSummary;
-}
-
-export interface AuditSummary {
-  score: number; // 0-100
-  grade: 'A' | 'B' | 'C' | 'D' | 'F';
-  criticalIssues: number;
-  securityIssues: number;
-  complianceIssues: number;
-  recommendations: string[];
 }
 
 export interface PluginConfig {
@@ -68,6 +72,7 @@ export interface PluginMetadata {
   description: string;
   author: string;
   homepage?: string;
+  enabled?: boolean;
   rules: ValidationRule[];
 }
 

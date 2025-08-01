@@ -1,0 +1,84 @@
+# Secure Application Configuration - Security Audit Example
+app:
+  name: "secure-application"
+  version: "1.0.0"
+  environment: "production"
+
+# Database Configuration - Secure
+database:
+  host: "prod-db.example.com"
+  port: 5432
+  name: "secure_app_prod"
+  credentials:
+    username: "app_user"
+    password: "${DB_PASSWORD}"  # ✅ Using environment variable
+    ssl: true
+    sslMode: "require"
+
+# Security Configuration - Comprehensive
+security:
+  cors:
+    origin: ["https://myapp.com", "https://admin.myapp.com"]
+    credentials: true
+    methods: ["GET", "POST", "PUT", "DELETE"]
+    allowedHeaders: ["Content-Type", "Authorization"]
+  
+  headers:
+    x-frame-options: "DENY"
+    x-content-type-options: "nosniff"
+    x-xss-protection: "1; mode=block"
+    strict-transport-security: "max-age=31536000; includeSubDomains; preload"
+    content-security-policy: "default-src 'self'; script-src 'self' 'unsafe-inline'"
+    referrer-policy: "strict-origin-when-cross-origin"
+  
+  authentication:
+    jwt:
+      secret: "${JWT_SECRET}"  # ✅ Using environment variable
+      expiresIn: "1h"
+      refreshExpiresIn: "7d"
+      issuer: "secure-app"
+      audience: "secure-app-users"
+    
+    bcrypt:
+      rounds: 12
+    
+    rateLimit:
+      windowMs: 900000
+      max: 100
+      message: "Too many requests from this IP"
+  
+  encryption:
+    algorithm: "aes-256-gcm"
+    key: "${ENCRYPTION_KEY}"  # ✅ Using environment variable
+
+# Logging Configuration - Secure
+logging:
+  level: "info"
+  format: "json"
+  output: "file"
+  file:
+    filename: "/var/log/secure-app/app.log"
+    maxsize: "10MB"
+    maxFiles: 5
+    compress: true
+  
+  # Security events logging
+  security:
+    enabled: true
+    level: "warn"
+    events: ["auth", "access", "error"]
+
+# Monitoring Configuration - Secure
+monitoring:
+  enabled: true
+  metrics:
+    enabled: true
+    port: 9090
+    path: "/metrics"
+    auth: true
+    username: "${METRICS_USER}"  # ✅ Using environment variable
+    password: "${METRICS_PASSWORD}"  # ✅ Using environment variable
+  
+  health:
+    enabled: true
+    path: "/health" 

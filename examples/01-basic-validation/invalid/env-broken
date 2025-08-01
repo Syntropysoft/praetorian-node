@@ -1,0 +1,37 @@
+# Database Configuration
+DATABASE_URL=postgresql://user:pass@localhost:5432/myapp
+DB_PASSWORD=hardcoded_password_123  # ❌ Error: hardcoded secret
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=myapp
+
+# API Configuration
+API_KEY=hardcoded_api_key_123  # ❌ Error: hardcoded secret
+JWT_SECRET=  # ❌ Error: variable without value
+API_PORT=3000
+API_HOST=0.0.0.0
+
+# Redis Configuration
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_PASSWORD=redis_password_123  # ❌ Error: hardcoded secret
+REDIS_DB=0
+
+# Application Configuration
+NODE_ENV=  # ❌ Error: variable without value
+PORT=3000
+LOG_LEVEL=invalid_level  # ❌ Error: invalid level
+LOG_FORMAT=json
+
+# Security Configuration
+CORS_ORIGIN=https://myapp.com
+SESSION_SECRET=  # ❌ Error: variable without value
+COOKIE_SECRET=hardcoded_cookie_secret  # ❌ Error: hardcoded secret
+
+# Monitoring Configuration
+METRICS_PORT=9090
+HEALTH_CHECK_PATH=/health
+ENABLE_MONITORING=maybe  # ❌ Error: should be true/false
+
+# ❌ Error: duplicate variable
+DATABASE_URL=postgresql://user:pass@localhost:5432/myapp 

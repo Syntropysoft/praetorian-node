@@ -1,0 +1,26 @@
+# SyntropyLog Development Configuration
+appName: "my-syntropylog-app"
+environment: "development"
+logLevel: "debug"
+
+# Broker configuration
+brokers:
+  nats:
+    enabled: false
+    url: "nats://localhost:4222"
+
+# Redis configuration
+redis:
+  enabled: false
+  url: "redis://localhost:6379"
+
+# HTTP configuration
+http:
+  enabled: true
+  port: 3000
+
+# Logging configuration
+logging:
+  transports:
+    - type: "console"
+      format: "pretty" 

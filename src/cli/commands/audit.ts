@@ -125,11 +125,11 @@ function displayAuditResults(result: any, options: AuditOptions) {
 
 function getGradeColor(grade: string): string {
   switch (grade) {
-    case 'A': return chalk.green;
-    case 'B': return chalk.cyan;
-    case 'C': return chalk.yellow;
-    case 'D': return chalk.magenta;
-    case 'F': return chalk.red;
-    default: return chalk.white;
+    case 'A': return chalk.green('');
+    case 'B': return chalk.cyan('');
+    case 'C': return chalk.yellow('');
+    case 'D': return chalk.magenta('');
+    case 'F': return chalk.red('');
+    default: return chalk.white('');
   }
 } 
