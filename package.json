@@ -1,0 +1,62 @@
+{
+  "name": "@syntropysoft/praetorian",
+  "version": "0.1.0",
+  "description": "Guardian of configurations and security - Universal validation framework for DevSecOps",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "praetorian": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc && rollup -c",
+    "dev": "tsx src/cli/cli.ts",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write src/**/*.ts",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "keywords": [
+    "validation",
+    "security",
+    "audit",
+    "devsecops",
+    "configuration",
+    "syntropysoft",
+    "praetorian"
+  ],
+  "author": "SyntropySoft",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/syntropysoft/praetorian.git"
+  },
+  "bugs": {
+    "url": "https://github.com/syntropysoft/praetorian/issues"
+  },
+  "homepage": "https://github.com/syntropysoft/praetorian#readme",
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0",
+    "rollup": "^4.0.0",
+    "rollup-plugin-dts": "^6.0.0",
+    "rollup-plugin-typescript2": "^0.35.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  },
+  "dependencies": {
+    "commander": "^11.0.0",
+    "inquirer": "^8.2.6",
+    "chalk": "^4.1.2",
+    "yaml": "^2.3.0",
+    "ajv": "^8.12.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+} 
