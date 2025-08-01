@@ -35,6 +35,15 @@ export class Validator {
   async validate(config: Record<string, any>, context: ValidationContext): Promise<ValidationResult> {
     const startTime = Date.now();
     
+    // Validate input parameters
+    if (config === null || config === undefined) {
+      throw new Error('Configuration is required and cannot be null or undefined');
+    }
+    
+    if (!context || typeof context !== 'object') {
+      throw new Error('Validation context is required and must be a valid object');
+    }
+    
     try {
       const pluginManager = this.pluginLoader.getPluginManager();
       const plugins = pluginManager.getEnabledPlugins();

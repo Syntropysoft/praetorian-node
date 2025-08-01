@@ -75,6 +75,14 @@ lib-cov
 coverage
 *.lcov
 
+# Jest coverage
+coverage/
+*.lcov
+
+# Stryker mutation testing
+.stryker-tmp/
+reports/mutation/
+
 # nyc test coverage
 .nyc_output
 

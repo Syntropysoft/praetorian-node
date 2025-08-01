@@ -57,6 +57,12 @@ export interface AuditResult {
   warnings: number;
   results: ValidationResult[];
   summary: AuditSummary;
+  // Properties expected by tests
+  vulnerabilities?: ValidationError[];
+  complianceIssues?: ValidationError[];
+  performanceIssues?: ValidationError[];
+  score?: number;
+  grade?: string;
 }
 
 export interface PluginConfig {

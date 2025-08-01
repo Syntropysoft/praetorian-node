@@ -41,14 +41,35 @@ export class AuditEngine {
   /**
    * Run a comprehensive audit
    */
-  async audit(context: ValidationContext): Promise<AuditResult> {
+  async audit(context: ValidationContext, options?: { type?: string; [key: string]: any }): Promise<AuditResult> {
     const startTime = Date.now();
     
+    // Validate input parameters
+    if (context === null || context === undefined) {
+      throw new Error('Audit context is required and cannot be null or undefined');
+    }
+    
+    if (!context || typeof context !== 'object') {
+      throw new Error('Audit context must be a valid object');
+    }
+    
     try {
-      const auditResults = await this.runAllAudits(context);
-      const summary = this.calculator.calculateSummary(auditResults);
+      let auditResults: ValidationResult[];
       
-      return this.buildAuditResult(auditResults, summary, startTime);
+      if (options?.type) {
+        // Run specific audit type
+        const result = await this.runAuditType(options.type, context);
+        auditResults = [result];
+      } else {
+        // Run all configured audit types
+        auditResults = await this.runAllAudits(context);
+      }
+      
+      const summary = this.calculator.calculateSummary(auditResults);
+      const result = this.buildAuditResult(auditResults, summary, startTime);
+      
+      // Add properties expected by tests
+      return this.addTestProperties(result, auditResults, options?.type);
 
     } catch (error) {
       return this.buildErrorResult(error, startTime);
@@ -156,5 +177,25 @@ export class AuditEngine {
       }],
       metadata: { auditType }
     };
+  }
+
+  /**
+   * Add properties expected by tests
+   */
+  private addTestProperties(result: AuditResult, auditResults: ValidationResult[], auditType?: string): AuditResult {
+    // Add score and grade from summary
+    result.score = result.summary.score;
+    result.grade = result.summary.grade;
+
+    // Add specific issue arrays based on audit type
+    if (auditType === 'security') {
+      result.vulnerabilities = auditResults.flatMap(r => r.errors).filter(e => e.severity === 'critical');
+    } else if (auditType === 'compliance') {
+      result.complianceIssues = auditResults.flatMap(r => r.errors);
+    } else if (auditType === 'performance') {
+      result.performanceIssues = auditResults.flatMap(r => r.errors);
+    }
+
+    return result;
   }
 } 
