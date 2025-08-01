@@ -1,6 +1,21 @@
+<p align="center">
+  <img src="assets/pretorian2.png" alt="Praetorian Logo" width="170"/>
+</p>
+
 # SyntropySoft Praetorian 🛡️
 
 > **Guardian of configurations and security** - Universal validation framework for DevSecOps
+
+## ⚠️ **ALPHA VERSION WARNING**
+
+> **🚨 This is an ALPHA version (0.0.1-alpha.1) - Use at your own risk!**
+> 
+> - **Not production ready** - This version is for testing and feedback only
+> - **API may change** - Breaking changes are expected in future releases
+> - **Limited features** - Core functionality is implemented but may have bugs
+> - **Testing phase** - Please report issues and provide feedback
+> 
+> **For production use, wait for stable releases (1.0.0+)**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
@@ -8,11 +23,11 @@
 
 ## 🎯 Philosophy
 
-**Praetorian** embodies the spirit of the elite Roman guard - protecting, validating, and ensuring the integrity of your systems. Built with **complete transparency** and **exceptional developer experience**, Praetorian is designed to be:
+**Praetorian** embodies the spirit of the elite Roman guard - protecting, validating, and ensuring the integrity of your configuration files. Built with **complete transparency** and **exceptional developer experience**, Praetorian is designed to be:
 
-- **🔍 Fully Auditable** - Every line of code is open for inspection
-- **🔌 Plug-and-Play** - Extensible architecture with community plugins
-- **⚡ Developer-First** - Incredible DX with self-descriptive APIs
+- **🔍 Configuration Validator** - Validate YAML, JSON, and ENV files with custom rules
+- **🔌 Rule-Based System** - Create and share validation rules for your infrastructure
+- **⚡ Developer-First** - Simple APIs for configuration validation
 - **🛡️ Security-Focused** - Built for DevSecOps and compliance teams
 
 ## 🚀 Quick Start
@@ -26,18 +41,31 @@ npm install @syntropysoft/praetorian
 ### Basic Usage
 
 ```typescript
-import { Validator, AuditEngine } from '@syntropysoft/praetorian';
+import { Validator } from '@syntropysoft/praetorian';
 
-// Create a validator
-const validator = new Validator();
-
-// Validate a configuration
-const result = await validator.validate({
-  config: { /* your config */ },
-  plugins: ['security', 'compliance']
+// Create a validator with custom rules
+const validator = new Validator({
+  plugins: ['security', 'compliance'],
+  rules: {
+    'no-secrets': true,
+    'required-fields': true,
+    'format-validation': true
+  }
 });
 
-console.log(result.success ? '✅ Valid' : '❌ Invalid');
+// Validate a YAML configuration file
+const result = await validator.validate({
+  config: { /* your config object */ },
+  context: {
+    config: { /* config object */ },
+    environment: 'production',
+    project: 'my-app',
+    timestamp: new Date(),
+    metadata: {}
+  }
+});
+
+console.log(result.success ? '✅ Configuration Valid' : '❌ Configuration Invalid');
 ```
 
 ### CLI Usage
@@ -46,87 +74,270 @@ console.log(result.success ? '✅ Valid' : '❌ Invalid');
 # Validate a configuration file
 praetorian validate config.yaml
 
-# Run a security audit
-praetorian audit --security
+# Validate with specific rules
+praetorian validate config.yaml --rules security,compliance
 
-# Initialize a new project
-praetorian init --rules
+# Run a comprehensive audit
+praetorian audit --security --compliance
+
+# Check specific configuration aspects
+praetorian check --env --yaml --json
 ```
 
-## 🏗️ Architecture
+## 🏗️ Configuration Validation Framework
+
+### Supported File Types
+
+- **YAML** - Configuration files, Kubernetes manifests, Docker Compose
+- **JSON** - Package.json, configuration objects, API specs
+- **ENV** - Environment variables, .env files
+- **Custom** - Extensible for any configuration format
 
 ### Core Components
 
-- **Validator** - Main validation engine
-- **AuditEngine** - Comprehensive auditing system
-- **PluginManager** - Plugin system for extensibility
-- **BasePlugin** - Foundation for custom plugins
+- **Validator** - Main validation engine for configuration files
+- **AuditEngine** - Comprehensive configuration auditing
+- **PluginManager** - Rule-based plugin system
+- **BasePlugin** - Foundation for custom validation rules
 
-### Plugin System
+## 🔌 Rule-Based Validation System
+
+### Built-in Rules
+
+```typescript
+// Security Rules
+const securityRules = {
+  'no-secrets-in-code': {
+    description: 'Detect hardcoded secrets in configuration',
+    severity: 'error',
+    validate: (config) => {
+      // Check for API keys, passwords, tokens
+    }
+  },
+  'required-security-headers': {
+    description: 'Ensure security headers are configured',
+    severity: 'warning',
+    validate: (config) => {
+      // Validate security headers
+    }
+  }
+};
+
+// Compliance Rules
+const complianceRules = {
+  'required-fields': {
+    description: 'Ensure all required fields are present',
+    severity: 'error',
+    validate: (config) => {
+      // Check required fields
+    }
+  },
+  'format-validation': {
+    description: 'Validate configuration format',
+    severity: 'warning',
+    validate: (config) => {
+      // Validate format
+    }
+  }
+};
+```
+
+### Custom Rules
 
 ```typescript
 import { BasePlugin } from '@syntropysoft/praetorian';
 
-class SecurityPlugin extends BasePlugin {
+class CustomValidationPlugin extends BasePlugin {
   protected initializeRules() {
     this.addRule({
-      id: 'no-secrets-in-code',
-      name: 'No Secrets in Code',
-      description: 'Detect hardcoded secrets',
-      category: 'security',
+      id: 'custom-yaml-structure',
+      name: 'Custom YAML Structure Validation',
+      description: 'Validate specific YAML structure for your project',
+      category: 'custom',
       severity: 'error',
       enabled: true
     });
   }
 
   protected async executeRule(rule, config, context) {
-    // Your validation logic here
+    // Your custom validation logic here
+    if (rule.id === 'custom-yaml-structure') {
+      // Validate your specific YAML structure
+      return this.validateYamlStructure(config);
+    }
+  }
+
+  private validateYamlStructure(config) {
+    // Custom validation logic
+    const errors = [];
+    
+    // Example: Check if required sections exist
+    if (!config.database) {
+      errors.push({
+        code: 'MISSING_DATABASE_SECTION',
+        message: 'Database configuration section is required',
+        severity: 'error'
+      });
+    }
+
+    return {
+      success: errors.length === 0,
+      errors,
+      warnings: []
+    };
   }
 }
 ```
 
-## 🔌 Available Plugins
+## 📋 Configuration Examples
 
-### Built-in Plugins
-- **Security** - Security best practices and vulnerability detection
-- **Compliance** - Regulatory compliance checks
-- **Performance** - Performance optimization rules
-- **Best Practices** - General development best practices
+### YAML Configuration Validation
 
-### Community Plugins
-- `@syntropylog/praetorian-plugin-aws` - AWS-specific validations
-- `@syntropylog/praetorian-plugin-kubernetes` - Kubernetes configurations
-- `@syntropylog/praetorian-plugin-redis` - Redis security and performance
+```yaml
+# config.yaml
+database:
+  host: localhost
+  port: 5432
+  name: myapp
+  credentials:
+    username: admin
+    password: ${DB_PASSWORD}  # ✅ Good: Using environment variable
 
-## 🎨 Developer Experience
+security:
+  cors:
+    origin: ["https://myapp.com"]
+    credentials: true
+  headers:
+    x-frame-options: DENY
+    x-content-type-options: nosniff
 
-### Autocomplete Support
-```typescript
-// Full TypeScript support with autocomplete
-const validator = new Validator({
-  plugins: ['security'], // ← Autocomplete here
-  rules: {
-    'no-secrets': true, // ← Autocomplete here
-    'ssl-required': false
-  }
-});
+logging:
+  level: info
+  format: json
+  output: stdout
 ```
 
-### Self-Descriptive APIs
-```typescript
-// Clear, readable validation results
-const result = await validator.validate(config);
+### Validation Rules for YAML
 
-if (!result.success) {
-  result.errors.forEach(error => {
-    console.log(`❌ ${error.message} at ${error.path}`);
-  });
+```typescript
+const yamlRules = {
+  'database-credentials': {
+    description: 'Database credentials must use environment variables',
+    validate: (config) => {
+      const errors = [];
+      if (config.database?.credentials?.password && 
+          !config.database.credentials.password.startsWith('${')) {
+        errors.push({
+          code: 'HARDCODED_PASSWORD',
+          message: 'Database password should use environment variable',
+          path: 'database.credentials.password'
+        });
+      }
+      return { success: errors.length === 0, errors };
+    }
+  },
+  'security-headers': {
+    description: 'Required security headers must be present',
+    validate: (config) => {
+      const requiredHeaders = ['x-frame-options', 'x-content-type-options'];
+      const errors = [];
+      
+      requiredHeaders.forEach(header => {
+        if (!config.security?.headers?.[header]) {
+          errors.push({
+            code: 'MISSING_SECURITY_HEADER',
+            message: `Missing required security header: ${header}`,
+            path: `security.headers.${header}`
+          });
+        }
+      });
+      
+      return { success: errors.length === 0, errors };
+    }
+  }
+};
+```
+
+### ENV File Validation
+
+```bash
+# .env
+DATABASE_URL=postgresql://user:pass@localhost:5432/db
+API_KEY=${API_KEY_SECRET}
+NODE_ENV=production
+PORT=3000
+```
+
+### JSON Configuration Validation
+
+```json
+{
+  "app": {
+    "name": "my-application",
+    "version": "1.0.0",
+    "environment": "production"
+  },
+  "database": {
+    "url": "${DATABASE_URL}",
+    "pool": {
+      "min": 2,
+      "max": 10
+    }
+  },
+  "security": {
+    "jwt": {
+      "secret": "${JWT_SECRET}",
+      "expiresIn": "24h"
+    }
+  }
 }
+```
+
+## 🎯 Integration Examples
+
+### CI/CD Pipeline Integration
+
+```yaml
+# .github/workflows/validate-config.yml
+name: Validate Configuration
+on: [push, pull_request]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Install Praetorian
+        run: npm install @syntropysoft/praetorian
+      
+      - name: Validate Configuration
+        run: |
+          praetorian validate config.yaml --rules security,compliance
+          praetorian validate .env --rules env-validation
+          praetorian validate package.json --rules json-structure
+```
+
+### Local Development
+
+```bash
+# Pre-commit validation
+praetorian validate config.yaml --strict
+
+# Development environment check
+praetorian check --env dev --yaml config-dev.yaml
+
+# Production readiness audit
+praetorian audit --security --compliance --performance
 ```
 
 ## 🔧 Configuration
 
-### Basic Configuration
+### Praetorian Configuration File
+
 ```yaml
 # praetorian.yaml
 plugins:
@@ -141,8 +352,14 @@ plugins:
 
 rules:
   no-secrets-in-code: true
-  ssl-required: true
-  password-complexity: true
+  required-fields: true
+  format-validation: true
+  custom-yaml-structure: true
+
+validation:
+  strict: false
+  fail-fast: false
+  output-format: pretty
 ```
 
 ## 🧪 Testing
@@ -183,4 +400,4 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-**Praetorian** - Protecting your systems with the vigilance of the elite guard. 🛡️ 
+**Praetorian** - Protecting your configurations with the vigilance of the elite guard. 🛡️ 
