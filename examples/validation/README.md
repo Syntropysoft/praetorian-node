@@ -9,6 +9,7 @@ validation/
 ├── yaml/          # YAML configuration examples
 ├── json/          # JSON configuration examples
 ├── env/           # Environment file examples
+├── dotnet/        # .NET appsettings.json examples
 └── README.md      # This file
 ```
 
@@ -83,6 +84,38 @@ praetorian validate
   • Key 'METRICS_PORT' is only present in env.staging
 ```
 
+### 4. .NET Validation
+
+```bash
+cd examples/validation/dotnet
+praetorian validate
+```
+
+**Expected Output:**
+```
+❌ Key inconsistencies found:
+  • Key 'app' is missing in apps/web/appsettings.json
+  • Key 'api' is missing in apps/web/appsettings.json
+  • Key 'database' is missing in apps/web/appsettings.json
+  • Key 'Logging' is missing in configs/frontend/app.config.json
+  • Key 'ConnectionStrings' is missing in configs/frontend/app.config.json
+  • Key 'AppSettings' is missing in configs/frontend/app.config.json
+
+⚠️  105 warning(s):
+  • Key 'app' is only present in configs/frontend/app.config.json
+  • Key 'api' is only present in configs/frontend/app.config.json
+  • Key 'database' is only present in configs/frontend/app.config.json
+  • Key 'Logging' is only present in apps/web/appsettings.json
+  • Key 'ConnectionStrings' is only present in apps/web/appsettings.json
+  • Key 'AppSettings' is only present in apps/web/appsettings.json
+```
+
+**Features demonstrated:**
+- **Multi-folder structure** - Files in different directories
+- **C# appsettings.json** - .NET configuration files
+- **Mixed formats** - JSON configs and appsettings.json
+- **Complex nested keys** - Logging.LogLevel.Default, etc.
+
 ## 📋 Configuration Files
 
 Each directory contains:
@@ -98,6 +131,9 @@ Each directory contains:
 3. **Extra key warnings** for environment-specific settings
 4. **Configuration setup** with `praetorian.yaml`
 5. **Real-world scenarios** with actual configuration patterns
+6. **Multi-folder validation** with files in different directories
+7. **Framework compatibility** (.NET, Node.js, Python, etc.)
+8. **Complex nested structures** (Logging.LogLevel.Default, etc.)
 
 ## 🔧 Customization
 
