@@ -22,7 +22,7 @@
 
 ## ⚠️ **MVP ALPHA VERSION WARNING**
 
-> **🚨 This is an MVP ALPHA version (0.0.1-alpha.10) - Limited functionality!**
+> **🚨 This is an MVP ALPHA version (0.0.1-alpha.11) - Limited functionality!**
 > 
 > **✅ CURRENTLY WORKING FEATURES:**
 > - **CLI with professional banner** - Beautiful ASCII art with security colors
@@ -211,6 +211,7 @@ Check out our **[examples directory](./examples/validation/)** for comprehensive
 - **[YAML Examples](./examples/validation/yaml/)** - Basic YAML configuration validation
 - **[JSON Examples](./examples/validation/json/)** - JSON configuration files
 - **[ENV Examples](./examples/validation/env/)** - Environment file validation
+- **[.NET Examples](./examples/validation/dotnet/)** - C# appsettings.json and multi-folder validation
 
 Each example includes:
 - Sample configuration files
