@@ -1,26 +1,39 @@
-# SyntropyLog Production Configuration
-appName: "my-syntropylog-app"
-environment: "production"
-logLevel: "warn"
+app:
+  name: "my-application"
+  version: "1.0.0"
+  environment: "production"
 
-# Broker configuration
-brokers:
-  nats:
-    enabled: true
-    url: "nats://prod-nats-cluster:4222"
+database:
+  host: "prod-db.example.com"
+  port: 5432
+  name: "myapp_prod"
+  url: "postgresql://prod-db.example.com:5432/myapp_prod"
+  credentials:
+    username: "admin"
+    password: "${DB_PASSWORD}"
 
-# Redis configuration
-redis:
-  enabled: true
-  url: "redis://prod-redis-cluster:6379"
+security:
+  cors:
+    origin: ["https://myapp.com"]
+    credentials: true
+  headers:
+    x-frame-options: "DENY"
+    x-content-type-options: "nosniff"
+    x-xss-protection: "1; mode=block"
 
-# HTTP configuration
-http:
-  enabled: true
-  port: 3000
-
-# Logging configuration
 logging:
-  transports:
-    - type: "console"
-      format: "json" 
+  level: "info"
+  format: "json"
+  output: "stdout"
+
+api:
+  token: "prod_token_12345678901234567890"
+  rateLimit:
+    windowMs: 900000
+    max: 50
+  timeout: 30000
+
+# Production-specific settings
+monitoring:
+  enabled: true
+  metrics: true 

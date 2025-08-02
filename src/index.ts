@@ -5,16 +5,16 @@
  * Universal validation framework for DevSecOps
  */
 
-// Core exports
-export { Validator } from './core/Validator';
-export { AuditEngine } from './core/AuditEngine';
-export { PluginManager } from './core/PluginManager';
-
-// Plugin system
-export { BasePlugin } from './plugins/base/BasePlugin';
+// Core exports for MVP
+export { ConfigParser } from './core/ConfigParser';
+export { EqualityRule } from './core/rules/EqualityRule';
 
 // Types
-export type { ValidationResult, ValidationRule, AuditResult, PluginConfig } from './types';
-
-// CLI (for programmatic access)
-export { runCLI } from './cli/cli'; 
+export type { 
+  ValidationResult, 
+  ValidationError, 
+  ValidationWarning,
+  ConfigFile,
+  PraetorianConfig,
+  ValidationRule
+} from './types'; 

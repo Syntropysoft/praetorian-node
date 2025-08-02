@@ -1,14 +1,22 @@
 {
   "name": "@syntropysoft/praetorian",
-  "version": "0.0.1-alpha.4",
-  "description": "Guardian of configurations and security - Universal validation framework for DevSecOps",
+  "version": "0.0.1-alpha.10",
+  "description": "Praetorian CLI – A universal multi-environment configuration validator for DevSecOps teams. Validate, compare, and secure YAML/ENV files with ease.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
     "praetorian": "dist/cli.js"
   },
+  "oclif": {
+    "bin": "praetorian",
+    "dirname": "dist",
+    "commands": "./dist/commands",
+    "plugins": [
+      "@oclif/plugin-help"
+    ]
+  },
   "scripts": {
-    "build": "tsc && rollup -c",
+    "build": "npx tsc src/cli.ts src/commands/validate.ts src/commands/init.ts src/core/ConfigParser.ts src/core/rules/EqualityRule.ts src/types/index.ts --outDir dist --target ES2020 --module CommonJS --esModuleInterop --skipLibCheck",
     "dev": "tsx src/cli/cli.ts",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -20,16 +28,24 @@
     "prepublishOnly": "npm run clean && npm run build"
   },
   "keywords": [
+    "praetorian",
+    "config-validator",
+    "yaml-checker",
+    "cli-tool",
+    "devsecops",
+    "configuration",
     "validation",
     "security",
     "audit",
-    "devsecops",
-    "configuration",
     "syntropysoft",
-    "praetorian"
+    "yaml",
+    "json",
+    "env",
+    "multi-environment",
+    "configuration-management"
   ],
   "author": "SyntropySoft",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/syntropysoft/praetorian.git"
@@ -67,6 +83,8 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@oclif/core": "^4.5.2",
+    "@oclif/plugin-help": "^6.2.32",
     "ajv": "^8.12.0",
     "chalk": "^4.1.2",
     "commander": "^13.1.0",

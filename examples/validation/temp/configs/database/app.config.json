@@ -1,0 +1,25 @@
+{
+  "app": {
+    "name": "Database Service",
+    "version": "1.0.0",
+    "debug": false
+  },
+  "database": {
+    "url": "mongodb://localhost:27017/main",
+    "poolSize": 50,
+    "replicaSet": "rs0",
+    "ssl": true
+  },
+  "backup": {
+    "enabled": true,
+    "schedule": "0 2 * * *",
+    "retention": 30
+  },
+  "monitoring": {
+    "enabled": true,
+    "metrics": {
+      "port": 9090,
+      "path": "/metrics"
+    }
+  }
+} 

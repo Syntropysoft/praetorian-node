@@ -1,0 +1,30 @@
+# Praetorian Configuration for ENV Examples
+files:
+  - env.dev
+  - env.prod
+  - env.staging
+
+# Keys to ignore (environment-specific)
+ignore_keys:
+  - APP_DEBUG
+  - APP_PORT
+  - DB_HOST
+  - API_BASE_URL
+  - LOG_LEVEL
+  - LOG_OUTPUT
+  - LOG_FILE_PATH
+
+# Keys that must be present in all environments
+required_keys:
+  - APP_NAME
+  - APP_ENVIRONMENT
+  - DB_PORT
+  - DB_NAME
+  - API_TIMEOUT
+  - API_RETRIES
+
+# Environment mapping
+environments:
+  dev: env.dev
+  prod: env.prod
+  staging: env.staging 

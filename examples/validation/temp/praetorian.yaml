@@ -1,0 +1,41 @@
+files:
+  # Archivos de configuración en diferentes carpetas
+  - configs/frontend/app.config.json
+  - configs/backend/app.config.json
+  - configs/database/app.config.json
+  
+  # Archivos de C# appsettings.json
+  - apps/web/appsettings.json
+  - apps/api/appsettings.json
+  - apps/worker/appsettings.json
+
+ignore_keys:
+  - debug
+  - temp
+  - Logging
+  - AllowedHosts
+
+required_keys:
+  - app.name
+  - app.version
+  - database.url
+
+schema:
+  app.version: string
+  database.poolSize: number
+  api.timeout: number
+
+patterns:
+  app.name: '^[A-Za-z ]+$'
+
+forbidden_keys:
+  - password_plaintext
+  - secret_key
+
+environments:
+  frontend: configs/frontend/app.config.json
+  backend: configs/backend/app.config.json
+  database: configs/database/app.config.json
+  web: apps/web/appsettings.json
+  api: apps/api/appsettings.json
+  worker: apps/worker/appsettings.json

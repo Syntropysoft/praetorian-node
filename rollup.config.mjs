@@ -12,6 +12,8 @@ const createConfig = (input, output, format = 'cjs') => ({
     sourcemap: true,
   },
   external: [
+    '@oclif/core',
+    '@oclif/plugin-help',
     'commander',
     'inquirer',
     'chalk',
@@ -72,7 +74,7 @@ export default [
   createConfig('src/index.ts', 'dist/index.js', 'cjs'),
   createDtsConfig('src/index.ts', 'dist/index.d.ts'),
   
-  // CLI
-  createConfig('src/cli/cli.ts', 'dist/cli.js', 'cjs'),
-  createDtsConfig('src/cli/cli.ts', 'dist/cli.d.ts'),
+  // New CLI with OCLIF
+  createConfig('src/cli.ts', 'dist/cli.js', 'cjs'),
+  createDtsConfig('src/cli.ts', 'dist/cli.d.ts'),
 ]; 
