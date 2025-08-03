@@ -1,6 +1,0 @@
-# SyntropySoft Praetorian - Environment Configuration
-# Default environments file for SyntropyLog validation
-
-dev: config-dev.yaml
-staging: config-staging.yaml
-production: config-prod.yaml 
