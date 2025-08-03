@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <app>
+        <name>my-app</name>
+        <debug>true</debug>
+        <port>3000</port>
+        <environment>development</environment>
+    </app>
+    <database>
+        <host>localhost</host>
+        <port>5432</port>
+        <name>dev_db</name>
+        <user>dev_user</user>
+        <password>dev_password</password>
+    </database>
+    <api>
+        <base_url>http://localhost:8000</base_url>
+        <timeout>5000</timeout>
+        <retries>3</retries>
+    </api>
+    <logging>
+        <level>debug</level>
+        <format>json</format>
+        <output>console</output>
+    </logging>
+</configuration> 

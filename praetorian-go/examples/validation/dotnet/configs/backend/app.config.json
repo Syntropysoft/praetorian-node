@@ -1,0 +1,24 @@
+{
+  "app": {
+    "name": "Backend API",
+    "version": "1.0.0",
+    "debug": false
+  },
+  "api": {
+    "baseUrl": "https://api.example.com",
+    "timeout": 30000,
+    "retries": 3,
+    "rateLimit": 1000
+  },
+  "security": {
+    "jwtSecret": "super-secret-key",
+    "cors": {
+      "origin": "*",
+      "credentials": true
+    }
+  },
+  "database": {
+    "url": "mongodb://localhost:27017/backend",
+    "poolSize": 20
+  }
+} 

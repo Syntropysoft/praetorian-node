@@ -1,0 +1,22 @@
+app:
+  name: my-app
+  debug: true
+  port: 3000
+  environment: development
+
+database:
+  host: localhost
+  port: 5432
+  name: dev_db
+  user: dev_user
+  password: dev_password
+
+api:
+  base_url: http://localhost:8000
+  timeout: 5000
+  retries: 3
+
+logging:
+  level: debug
+  format: json
+  output: console 

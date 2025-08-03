@@ -1,0 +1,28 @@
+# Praetorian Configuration for INI Examples
+files:
+  - config-dev.ini
+  - config-prod.ini
+
+# Keys to ignore (environment-specific)
+ignore_keys:
+  - app.debug
+  - app.port
+  - database.host
+  - api.base_url
+  - logging.level
+  - logging.output
+  - logging.file_path
+
+# Keys that must be present in all environments
+required_keys:
+  - app.name
+  - app.environment
+  - database.port
+  - database.name
+  - api.timeout
+  - api.retries
+
+# Environment mapping
+environments:
+  dev: config-dev.ini
+  prod: config-prod.ini 

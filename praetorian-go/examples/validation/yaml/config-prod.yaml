@@ -1,0 +1,29 @@
+app:
+  name: my-app
+  port: 80
+  environment: production
+
+database:
+  host: prod-db.example.com
+  port: 5432
+  name: prod_db
+  user: ${DB_USER}
+  password: ${DB_PASSWORD}
+  url: postgresql://${DB_USER}:${DB_PASSWORD}@prod-db.example.com:5432/prod_db
+
+api:
+  base_url: https://api.example.com
+  timeout: 10000
+  retries: 5
+
+logging:
+  level: info
+  format: json
+  output: file
+  file_path: /var/log/app.log
+
+security:
+  enabled: true
+  cors:
+    origin: ["https://example.com"]
+    credentials: true 

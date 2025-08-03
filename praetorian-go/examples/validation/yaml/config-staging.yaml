@@ -1,0 +1,27 @@
+app:
+  name: my-app
+  port: 8080
+  environment: staging
+
+database:
+  host: staging-db.example.com
+  port: 5432
+  name: staging_db
+  user: ${DB_USER}
+  password: ${DB_PASSWORD}
+
+api:
+  base_url: https://staging-api.example.com
+  timeout: 8000
+  retries: 3
+
+logging:
+  level: warn
+  format: json
+  output: console
+
+monitoring:
+  enabled: true
+  metrics:
+    port: 9090
+    path: /metrics 

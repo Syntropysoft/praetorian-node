@@ -1,0 +1,24 @@
+{
+  "app": {
+    "name": "Frontend App",
+    "version": "1.0.0",
+    "debug": true
+  },
+  "api": {
+    "baseUrl": "https://api.example.com",
+    "timeout": 30000,
+    "retries": 3
+  },
+  "ui": {
+    "theme": "dark",
+    "language": "es",
+    "features": {
+      "notifications": true,
+      "analytics": false
+    }
+  },
+  "database": {
+    "url": "mongodb://localhost:27017/frontend",
+    "poolSize": 10
+  }
+} 
