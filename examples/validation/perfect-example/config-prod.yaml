@@ -1,0 +1,19 @@
+app:
+  name: my-app
+  environment: production
+  port: 80
+
+database:
+  host: prod-db.example.com
+  port: 5432
+  name: prod_db
+
+api:
+  base_url: https://api.example.com
+  timeout: 10000
+  retries: 5
+
+logging:
+  level: info
+  format: json
+  output: file 

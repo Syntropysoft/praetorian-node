@@ -1,0 +1,14 @@
+database:
+  host: prod-db.example.com
+  port: 5432
+  name: prod_db
+  user: prod_user
+
+api:
+  version: v1
+  port: 80
+  debug: false
+
+logging:
+  level: info
+  format: json 

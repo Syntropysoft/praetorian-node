@@ -1,0 +1,16 @@
+files:
+  - config-dev.yaml
+  - config-staging.yaml      # Este archivo NO existe
+  - config-prod.yaml
+
+ignore_keys:
+  - debug
+  - temp
+
+required_keys:
+  - database.host
+  - database.port
+  - database.name
+  - api.version
+  - api.port
+  - logging.level 

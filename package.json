@@ -1,6 +1,6 @@
 {
   "name": "@syntropysoft/praetorian",
-  "version": "0.0.1-alpha.11",
+  "version": "0.0.2-alpha.1",
   "description": "Praetorian CLI – A universal multi-environment configuration validator for DevSecOps teams. Validate, compare, and secure YAML/ENV files with ease.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -16,15 +16,17 @@
     ]
   },
   "scripts": {
-    "build": "npx tsc src/cli.ts src/commands/validate.ts src/commands/init.ts src/core/ConfigParser.ts src/core/rules/EqualityRule.ts src/types/index.ts --outDir dist --target ES2020 --module CommonJS --esModuleInterop --skipLibCheck",
-    "dev": "tsx src/cli/cli.ts",
+    "build": "tsc",
+    "dev": "tsx src/presentation/cli/simple-cli.ts",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
+    "test:integration": "jest tests/integration/",
     "test:mutation": "stryker run",
+    "clean:tmp": "node scripts/clean-tmp.js",
+    "clean": "rm -rf dist && npm run clean:tmp",
     "lint": "eslint src/**/*.ts",
     "format": "prettier --write src/**/*.ts",
-    "clean": "rm -rf dist",
     "prepublishOnly": "npm run clean && npm run build"
   },
   "keywords": [
@@ -61,10 +63,6 @@
     "LICENSE"
   ],
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^28.0.6",
-    "@rollup/plugin-json": "^6.1.0",
-    "@rollup/plugin-node-resolve": "^16.0.1",
-    "@rollup/plugin-typescript": "^12.1.4",
     "@stryker-mutator/jest-runner": "^8.7.1",
     "@types/inquirer": "^9.0.8",
     "@types/jest": "^30.0.0",
@@ -75,9 +73,6 @@
     "jest": "^30.0.5",
     "jest-environment-node": "^30.0.5",
     "prettier": "^3.0.0",
-    "rollup": "^4.0.0",
-    "rollup-plugin-dts": "^6.0.0",
-    "rollup-plugin-typescript2": "^0.35.0",
     "ts-jest": "^29.4.0",
     "tsx": "^4.0.0",
     "typescript": "^5.0.0"
@@ -85,9 +80,7 @@
   "dependencies": {
     "@oclif/core": "^4.5.2",
     "@oclif/plugin-help": "^6.2.32",
-    "ajv": "^8.12.0",
     "chalk": "^4.1.2",
-    "commander": "^13.1.0",
     "inquirer": "^8.2.6",
     "yaml": "^2.3.0"
   },

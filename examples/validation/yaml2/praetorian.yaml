@@ -1,0 +1,17 @@
+files:
+  - config-dev.yaml
+  - config-prod.yaml
+  - config-staging.yaml
+
+ignore_keys:
+  - debug
+  - Logging
+  - AllowedHosts
+
+required_keys:
+  - database.host
+  - database.port
+  - database.name
+  - api.version
+  - api.port
+  - logging.level 

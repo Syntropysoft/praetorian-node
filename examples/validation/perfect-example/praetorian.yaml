@@ -1,0 +1,31 @@
+# Praetorian Configuration - Perfect Example
+# This example shows configurations with identical structure across environments
+
+files:
+  - config-dev.yaml
+  - config-prod.yaml
+  - config-staging.yaml
+
+# No keys to ignore - all keys should be identical
+# ignore_keys: []
+
+# Keys that must be present in all environments
+required_keys:
+  - app.name
+  - app.environment
+  - app.port
+  - database.host
+  - database.port
+  - database.name
+  - api.base_url
+  - api.timeout
+  - api.retries
+  - logging.level
+  - logging.format
+  - logging.output
+
+# Environment mapping
+environments:
+  dev: config-dev.yaml
+  prod: config-prod.yaml
+  staging: config-staging.yaml 

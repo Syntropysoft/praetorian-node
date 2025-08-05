@@ -1,0 +1,9 @@
+database:
+  host: null
+  port: null
+  name: null
+api:
+  version: null
+  port: null
+logging:
+  level: null

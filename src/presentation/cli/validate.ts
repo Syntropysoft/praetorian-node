@@ -3,9 +3,9 @@ import chalk from 'chalk';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as yaml from 'yaml';
-import { ConfigParser } from '../infrastructure/parsers/ConfigParser';
-import { EqualityRule } from '../domain/rules/EqualityRule';
-import { ConfigFile } from '../shared/types';
+import { ConfigParser } from '../../infrastructure/parsers/ConfigParser';
+import { EqualityRule } from '../../domain/rules/EqualityRule';
+import { ConfigFile } from '../../shared/types';
 
 export default class Validate extends Command {
   static override description = 'Validate configuration files for key consistency';

@@ -1,6 +1,6 @@
 import { Command, Flags, Args } from '@oclif/core';
 import chalk from 'chalk';
-import { ConfigParser } from '../infrastructure/parsers/ConfigParser';
+import { ConfigParser } from '../../infrastructure/parsers/ConfigParser';
 
 export default class Init extends Command {
   static override description = 'Initialize a new Praetorian configuration file';
