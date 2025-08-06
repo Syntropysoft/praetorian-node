@@ -20,13 +20,13 @@
 
 ---
 
-## 🎉 **ALPHA-2 RELEASE HIGHLIGHTS**
+## 🎉 **ALPHA-3 RELEASE HIGHLIGHTS**
 
-> **🚀 Praetorian CLI v0.0.2-alpha.1 - Major Improvements!**
+> **🚀 Praetorian CLI v0.0.2-alpha.3 - Major Improvements!**
 > 
 > **✅ NEW FEATURES & IMPROVEMENTS:**
 > - **🏗️ Clean Architecture** - Complete codebase reorganization with SOLID principles
-> - **🧪 Robust Testing** - 158 tests passing with comprehensive coverage
+> - **🧪 Robust Testing** - 205 tests passing with comprehensive coverage
 > - **📦 Optimized Dependencies** - 36 unnecessary packages removed (66% reduction)
 > - **🔧 Enhanced Build System** - Improved TypeScript compilation and error handling
 > - **📚 Professional Documentation** - Complete English documentation with working examples
@@ -35,10 +35,12 @@
 > - **⚡ Performance Improvements** - Faster validation and better error handling
 > - **🧹 Automatic Cleanup** - Smart temporary file management
 > - **🔍 Advanced Validation** - Improved key comparison and structure validation
+> - **🎨 Declarative Programming** - Functional patterns with 100% mutation score
+> - **🔧 Multi-Format Support** - 9 file formats supported with clean adapters
 > 
 > **✅ CORE FEATURES (All Working):**
 > - **CLI with professional banner** - Beautiful ASCII art with security colors
-> - **Key comparison** - Compare keys across multiple configuration files (JSON/YAML/.env)
+> - **Key comparison** - Compare keys across multiple configuration files (JSON/YAML/ENV/TOML/INI/XML/Properties/HCL/PLIST)
 > - **Multi-folder support** - Works with files in different directories
 > - **C# compatibility** - Supports appsettings.json and other .NET configurations
 > - **Configuration file** - `praetorian.yaml` for defining files to compare
@@ -409,7 +411,7 @@ Each example includes:
 ## 🧪 Testing & Quality
 
 ### **Comprehensive Test Suite**
-- **✅ 158 tests passing** across 13 test suites
+- **✅ 205 tests passing** across 16 test suites
 - **✅ Unit tests** for all core functionality
 - **✅ Integration tests** for end-to-end validation
 - **✅ Mutation testing** configured with Stryker
@@ -421,6 +423,7 @@ Each example includes:
 - **100% coverage** on environment management
 - **97% coverage** on utility functions
 - **86% coverage** on validation rules
+- **100% mutation score** on declarative programming patterns
 
 ### **Running Tests**
 ```bash
