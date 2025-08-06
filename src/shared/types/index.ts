@@ -6,6 +6,7 @@ export interface ValidationResult {
   success: boolean;
   errors: ValidationError[];
   warnings: ValidationWarning[];
+  info?: ValidationInfo[]; // Nueva sección para información (claves vacías)
   metadata?: {
     duration?: number;
     rulesChecked?: number;
@@ -32,6 +33,14 @@ export interface ValidationWarning {
   context?: any;
 }
 
+export interface ValidationInfo {
+  code: string;
+  message: string;
+  severity: 'info';
+  path?: string;
+  context?: any;
+}
+
 export interface ValidationRule {
   id: string;
   name: string;
@@ -46,8 +55,13 @@ export interface ValidationRule {
 export interface ConfigFile {
   path: string;
   content: Record<string, any>;
-  format: 'yaml' | 'json' | 'env';
+  format: string; // Support for all file formats: yaml, json, env, toml, ini, xml
   environment?: string;
+  metadata?: {
+    size?: number;
+    lastModified?: Date;
+    encoding?: string;
+  };
 }
 
 export interface PraetorianConfig {

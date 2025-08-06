@@ -21,6 +21,7 @@ export * from './infrastructure/plugins/PluginManager';
 export * from './infrastructure/plugins/HealthChecker';
 export * from './infrastructure/plugins/base/BasePlugin';
 export * from './infrastructure/parsers/ConfigParser';
+export * from './infrastructure/adapters';
 
 // Shared Layer - Solo exportar tipos específicos para evitar duplicados
 export type { 

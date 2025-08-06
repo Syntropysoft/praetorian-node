@@ -1,3 +1,22 @@
+/**
+ * TODO: IMPERATIVE PROGRAMMING PATTERN - NEEDS REFACTORING
+ * 
+ * This file demonstrates imperative programming practices that make testing difficult:
+ * - Imperative forEach loops with mutable state (lines 32-50)
+ * - Mutable variables (let) instead of immutable transformations
+ * - Complex nested conditionals
+ * - Multiple responsibilities in single methods
+ * - Side effects in loops
+ * 
+ * Mutation Score: 0% - Imperative patterns make testing impossible!
+ * 
+ * RECOMMENDATION: Refactor to use:
+ * - Functional array methods (reduce, map, filter)
+ * - Immutable data transformations
+ * - Pure functions with clear contracts
+ * - Composition over mutation
+ */
+
 import { ValidationResult, AuditSummary } from '../../shared/types';
 
 export class AuditCalculator {

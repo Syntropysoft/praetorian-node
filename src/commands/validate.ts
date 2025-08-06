@@ -1,10 +1,8 @@
 import { Command, Flags, Args } from '@oclif/core';
 import chalk from 'chalk';
-import * as fs from 'fs';
-import * as path from 'path';
-import * as yaml from 'yaml';
 import { ConfigParser } from '../infrastructure/parsers/ConfigParser';
 import { EqualityRule } from '../domain/rules/EqualityRule';
+import { FileReaderService } from '../infrastructure/adapters/FileReaderService';
 import { ConfigFile } from '../shared/types';
 
 export default class Validate extends Command {
@@ -95,62 +93,20 @@ export default class Validate extends Command {
   }
 
   private async loadFiles(filePaths: string[]): Promise<ConfigFile[]> {
-    const configFiles: ConfigFile[] = [];
-
-    for (const filePath of filePaths) {
-      if (!fs.existsSync(filePath)) {
-        throw new Error(`File not found: ${filePath}`);
-      }
-
-      const content = fs.readFileSync(filePath, 'utf8');
-      let parsedContent: Record<string, any>;
-
-      if (filePath.endsWith('.yaml') || filePath.endsWith('.yml')) {
-        parsedContent = yaml.parse(content);
-      } else if (filePath.endsWith('.json')) {
-        parsedContent = JSON.parse(content);
-      } else if (filePath.endsWith('.env') || filePath.startsWith('env.')) {
-        parsedContent = this.parseEnvFile(content);
-      } else {
-        throw new Error(`Unsupported file format: ${filePath}`);
-      }
-
-      configFiles.push({
-        path: filePath,
-        content: parsedContent,
-        format: this.getFileFormat(filePath),
-      });
-    }
-
-    return configFiles;
-  }
-
-  private parseEnvFile(content: string): Record<string, any> {
-    const result: Record<string, any> = {};
+    const fileReaderService = new FileReaderService();
     
-    const lines = content.split('\n');
-    for (const line of lines) {
-      const trimmed = line.trim();
-      if (trimmed && !trimmed.startsWith('#')) {
-        const [key, ...valueParts] = trimmed.split('=');
-        if (key && valueParts.length > 0) {
-          result[key.trim()] = valueParts.join('=').trim();
-        }
-      }
+    // Validate files before reading
+    const { valid, invalid } = fileReaderService.validateFiles(filePaths);
+    
+    if (invalid.length > 0) {
+      const supportedExtensions = fileReaderService.getSupportedExtensions().join(', ');
+      throw new Error(
+        `Unsupported file formats: ${invalid.join(', ')}. ` +
+        `Supported extensions: ${supportedExtensions}`
+      );
     }
     
-    return result;
-  }
-
-  private getFileFormat(filePath: string): 'yaml' | 'json' | 'env' {
-    if (filePath.endsWith('.yaml') || filePath.endsWith('.yml')) {
-      return 'yaml';
-    } else if (filePath.endsWith('.json')) {
-      return 'json';
-    } else if (filePath.endsWith('.env') || filePath.startsWith('env.')) {
-      return 'env';
-    }
-    throw new Error(`Unsupported file format: ${filePath}`);
+    return await fileReaderService.readFiles(valid);
   }
 
   private displayResults(result: any, outputFormat: string) {
@@ -179,11 +135,21 @@ export default class Validate extends Command {
       }
     }
 
+    // Mostrar claves vacías como información (no afecta el pipeline)
+    if (result.info && result.info.length > 0) {
+      console.log(chalk.blue(`\nℹ️  ${result.info.length} empty key(s) found (informational):`));
+      for (const info of result.info) {
+        console.log(chalk.blue(`  • ${info.message}`));
+      }
+      console.log(chalk.gray('    Note: Empty keys are informational only and do not affect validation success'));
+    }
+
     // Summary
     if (result.metadata) {
       console.log(chalk.blue('\n📈 Summary:'));
       console.log(`  • Files compared: ${result.metadata.filesCompared || 0}`);
       console.log(`  • Total keys: ${result.metadata.totalKeys || 0}`);
+      console.log(`  • Empty keys: ${result.metadata.emptyKeys || 0}`);
       console.log(`  • Duration: ${result.metadata.duration || 0}ms`);
     }
   }

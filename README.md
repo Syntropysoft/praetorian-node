@@ -86,11 +86,115 @@ It ensures that your configuration files remain **consistent across environments
 
 ## 🔧 Compatible With
 
-- **Configuration Formats**: JSON, YAML, .env files
-- **Frameworks**: Node.js, .NET (appsettings.json), Python, Java, Go
+- **Configuration Formats**: JSON, YAML, .env, TOML, INI, XML files
+- **Frameworks**: Node.js, .NET (appsettings.json), Python, Java, Go, Rust
 - **Environments**: Development, Staging, Production, Testing
 - **Architectures**: Monoliths, Microservices, Serverless
 - **Platforms**: Docker, Kubernetes, Cloud (AWS, Azure, GCP)
+
+---
+
+## 📁 Supported File Formats
+
+Praetorian supports multiple configuration file formats through its modular adapter system:
+
+| Format | Extensions | Status | Notes |
+|--------|------------|--------|-------|
+| **JSON** | `.json` | ✅ Full Support | Native support with nested object validation |
+| **YAML** | `.yaml`, `.yml` | ✅ Full Support | Supports anchors, aliases, and complex structures |
+| **Environment** | `.env`, `env.*` | ✅ Full Support | Key-value pairs with type inference |
+| **TOML** | `.toml` | ✅ Full Support | Table-based configuration format |
+| **INI** | `.ini`, `.cfg`, `.conf` | ✅ Full Support | Section-based configuration |
+| **XML** | `.xml` | ✅ Full Support | Nested element validation |
+| **Properties** | `.properties` | ✅ Full Support | Java-style properties with multiple separators |
+| **HCL** | `.hcl`, `.tf`, `.tfvars` | ✅ Full Support | HashiCorp Configuration Language |
+| **PLIST** | `.plist` | ⚠️ Partial Support | Apple Property List format |
+
+## 🐛 Known Issues
+
+### PLIST File Adapter
+
+**Issue:** Complex nested structures with arrays containing objects are not fully supported.
+
+**Affected:** `PlistFileAdapterV2` (new architecture)
+
+**Details:**
+- ✅ **Simple arrays** work correctly: `<array><string>item1</string><string>item2</string></array>`
+- ✅ **Nested dictionaries** work correctly: `<dict><key>nested</key><dict>...</dict></dict>`
+- ⚠️ **Arrays with objects** partially work: `<array><dict>...</dict><dict>...</dict></array>`
+
+**Example of affected structure:**
+```xml
+<dict>
+    <key>configs</key>
+    <array>
+        <dict>
+            <key>debug</key>
+            <true/>
+            <key>env</key>
+            <string>dev</string>
+        </dict>
+        <dict>
+            <key>debug</key>
+            <false/>
+            <key>env</key>
+            <string>prod</string>
+        </dict>
+    </array>
+</dict>
+```
+
+**Expected:** `{ configs: [{ debug: true, env: 'dev' }, { debug: false, env: 'prod' }] }`
+**Actual:** `{ configs: [] }`
+
+**Workaround:** Use the original `PlistFileAdapter` for complex structures until this issue is resolved.
+
+**Status:** 🔄 **In Progress** - The new architecture is being refined to handle complex array structures.
+
+---
+
+## 🚀 Quick Start
+
+```yaml
+# config.yaml
+database:
+  host: localhost
+  port: 5432
+```
+
+```json
+// config.json
+{
+  "database": {
+    "host": "localhost",
+    "port": 5432
+  }
+}
+```
+
+```toml
+# config.toml
+[database]
+host = "localhost"
+port = 5432
+```
+
+```ini
+# config.ini
+[database]
+host=localhost
+port=5432
+```
+
+```xml
+<!-- config.xml -->
+<config>
+  <database>
+    <host>localhost</host>
+    <port>5432</port>
+  </database>
+</config>
+```
 
 ---
 

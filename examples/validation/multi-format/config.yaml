@@ -1,0 +1,22 @@
+# Example YAML configuration file
+database:
+  host: localhost
+  port: 5432
+  name: myapp
+  ssl: true
+
+api:
+  host: 0.0.0.0
+  port: 3000
+  timeout: 30
+  debug: false
+
+redis:
+  host: localhost
+  port: 6379
+  password: ""
+
+logging:
+  level: info
+  format: json
+  output: stdout 

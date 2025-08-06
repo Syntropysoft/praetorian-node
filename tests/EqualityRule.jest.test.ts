@@ -249,6 +249,111 @@ describe('EqualityRule', () => {
       expect(result.metadata!.totalKeys).toBe(0);
     });
 
+    it('should detect empty keys as informational only', async () => {
+      const files: ConfigFile[] = [
+        {
+          path: 'config1.json',
+          content: {
+            database: {
+              host: 'localhost',
+              password: '', // Clave vacía
+              port: 5432
+            },
+            api: {
+              key: null, // Clave vacía
+              endpoint: 'https://api.example.com'
+            },
+            security: {
+              token: undefined, // Clave vacía
+              enabled: true
+            }
+          },
+          format: 'json'
+        },
+        {
+          path: 'config2.json',
+          content: {
+            database: {
+              host: 'localhost',
+              password: 'secret123', // Tiene valor
+              port: 5432
+            },
+            api: {
+              key: 'api-key-123', // Tiene valor
+              endpoint: 'https://api.example.com'
+            },
+            security: {
+              token: 'token-123', // Tiene valor
+              enabled: true
+            }
+          },
+          format: 'json'
+        }
+      ];
+
+      const result = await equalityRule.execute(files);
+
+      // Debe ser exitoso porque las claves vacías no afectan el success
+      expect(result.success).toBe(true);
+      expect(result.errors).toHaveLength(0);
+      expect(result.warnings).toHaveLength(0);
+      
+      // Debe detectar las claves vacías como información
+      expect(result.info).toBeDefined();
+      expect(result.info!.length).toBe(3);
+      
+      // Verificar que las claves vacías están en la información
+      const emptyKeyMessages = result.info!.map(info => info.message);
+      expect(emptyKeyMessages).toContain("Key 'database.password' has empty value in config1.json");
+      expect(emptyKeyMessages).toContain("Key 'api.key' has empty value in config1.json");
+      expect(emptyKeyMessages).toContain("Key 'security.token' has empty value in config1.json");
+      
+      // Verificar metadata
+      expect(result.metadata!.emptyKeys).toBe(3);
+    });
+
+    it('should ignore empty keys when they are in ignoreKeys', async () => {
+      const files: ConfigFile[] = [
+        {
+          path: 'config1.json',
+          content: {
+            database: {
+              host: 'localhost',
+              password: '', // Clave vacía que será ignorada
+              port: 5432
+            }
+          },
+          format: 'json'
+        },
+        {
+          path: 'config2.json',
+          content: {
+            database: {
+              host: 'localhost',
+              password: 'secret123',
+              port: 5432
+            }
+          },
+          format: 'json'
+        }
+      ];
+
+      const context = {
+        ignoreKeys: ['database.password']
+      };
+
+      const result = await equalityRule.execute(files, context);
+
+      expect(result.success).toBe(true);
+      expect(result.errors).toHaveLength(0);
+      expect(result.warnings).toHaveLength(0);
+      
+      // No debe reportar la clave vacía porque está ignorada
+      expect(result.info).toBeDefined();
+      expect(result.info!.length).toBe(0);
+      expect(result.metadata!.emptyKeys).toBe(0);
+    });
+
     it('should handle three or more files', async () => {
       const files: ConfigFile[] = [
         {

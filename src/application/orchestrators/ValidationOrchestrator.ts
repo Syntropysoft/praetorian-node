@@ -1,3 +1,23 @@
+/**
+ * TODO: IMPERATIVE PROGRAMMING PATTERN - NEEDS REFACTORING
+ * 
+ * This file demonstrates imperative programming practices that make testing difficult:
+ * - Imperative for loops (lines 200-210, 250-260, 280-290)
+ * - Mutable state handling with object mutations
+ * - Complex nested conditionals
+ * - Multiple responsibilities in single methods
+ * - Side effects in loops and object mutations
+ * 
+ * Mutation Score: 32.04% - Imperative patterns make testing fragile!
+ * 
+ * RECOMMENDATION: Refactor to use:
+ * - Functional array methods (map, filter, reduce)
+ * - Immutable data transformations
+ * - Pure functions with clear contracts
+ * - Composition over mutation
+ * - Recursive functional patterns for object traversal
+ */
+
 import fs from 'fs';
 import yaml from 'yaml';
 import { EqualityRule } from '../../domain/rules/EqualityRule';

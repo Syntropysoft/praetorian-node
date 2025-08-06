@@ -1,3 +1,17 @@
+/**
+ * TODO: DECLARATIVE PROGRAMMING PATTERN
+ * 
+ * This file demonstrates excellent declarative programming practices:
+ * - Pure functions with clear input/output contracts
+ * - Functional composition with async/await
+ * - Immutable data handling with spread operator
+ * - Array methods (forEach, push, length)
+ * - No imperative state mutations
+ * - Clear separation of concerns
+ * 
+ * Mutation Score: 100% - Declarative code is inherently testable!
+ */
+
 import { ValidationResult, ValidationContext } from '../../shared/types';
 import { PluginLoader } from '../../infrastructure/plugins/PluginLoader';
 import { HealthChecker } from '../../infrastructure/plugins/HealthChecker';

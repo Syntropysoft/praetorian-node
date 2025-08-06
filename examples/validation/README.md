@@ -10,6 +10,7 @@ validation/
 ├── json/          # JSON configuration examples
 ├── env/           # Environment file examples
 ├── dotnet/        # .NET appsettings.json examples
+├── multi-format/  # Multi-format configuration examples (NEW!)
 └── README.md      # This file
 ```
 
@@ -146,4 +147,72 @@ Feel free to modify the configuration files to test different scenarios:
 
 ## 📊 Expected Results
 
-All examples are designed to show **validation failures** to demonstrate Praetorian's detection capabilities. In a real scenario, you would fix these inconsistencies to make all environments consistent. 
+All examples are designed to show **validation failures** to demonstrate Praetorian's detection capabilities. In a real scenario, you would fix these inconsistencies to make all environments consistent.
+
+---
+
+## 🆕 Multi-Format Support (NEW!)
+
+The `multi-format/` directory demonstrates Praetorian's **modular adapter system** for supporting multiple configuration file formats.
+
+### Supported Formats
+
+| Format | Extensions | Description |
+|--------|------------|-------------|
+| **YAML** | `.yaml`, `.yml` | Human-readable configuration format |
+| **JSON** | `.json` | Standard JavaScript object notation |
+| **ENV** | `.env`, `env.*` | Environment variable files |
+| **TOML** | `.toml` | Tom's Obvious, Minimal Language |
+| **INI** | `.ini`, `.cfg`, `.conf` | Classic configuration format |
+| **XML** | `.xml` | Extensible Markup Language |
+| **Properties** | `.properties` | Java Properties format |
+| **HCL** | `.hcl`, `.tf`, `.tfvars` | HashiCorp Configuration Language |
+| **PLIST** | `.plist` | Apple Property List format |
+
+### Quick Start
+
+```bash
+cd examples/validation/multi-format
+praetorian validate
+```
+
+**Expected Output:**
+```
+📊 Validation Results:
+✅ All files have consistent keys!
+
+📈 Summary:
+  • Files compared: 9
+  • Total keys: 12
+  • Duration: Xms
+```
+
+### Validate Specific Formats
+
+```bash
+# YAML files
+praetorian validate config.yaml config-dev.yaml config-prod.yaml
+
+# JSON files
+praetorian validate config.json config-dev.json config-prod.json
+
+# TOML files
+praetorian validate config.toml config-dev.toml config-prod.toml
+
+# INI files
+praetorian validate config.ini config-dev.ini config-prod.ini
+
+# XML files
+praetorian validate config.xml config-dev.xml config-prod.xml
+
+# ENV files
+praetorian validate config.env config-dev.env config-prod.env
+```
+
+### Architecture Benefits
+
+- **Modular adapters** - Each format has its own adapter
+- **Automatic detection** - Factory pattern selects the correct adapter
+- **Unified interface** - All formats produce the same ConfigFile structure
+- **Easy extension** - Add new formats by implementing FileAdapter interface
+- **Robust error handling** - Format-specific error messages 

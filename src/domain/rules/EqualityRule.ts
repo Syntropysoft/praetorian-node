@@ -1,4 +1,4 @@
-import { ValidationRule, ValidationResult, ConfigFile, ValidationError, ValidationWarning, ValidationContext } from '../../shared/types';
+import { ValidationRule, ValidationResult, ConfigFile, ValidationError, ValidationWarning, ValidationInfo, ValidationContext } from '../../shared/types';
 
 export class EqualityRule implements ValidationRule {
   id = 'equality-rule';
@@ -42,16 +42,21 @@ export class EqualityRule implements ValidationRule {
     // Pasada 3: Validar claves requeridas
     const requiredKeysReport = this.validateRequiredKeys(files, requiredKeys);
     
-    // Combinar todos los errores
+    // Pasada 4: Detectar claves vacías (solo información, no afecta success)
+    const emptyKeysReport = this.detectEmptyKeys(files, ignoreKeys);
+    
+    // Combinar todos los errores y warnings
     const allErrors = [...missingKeysReport.errors, ...requiredKeysReport.errors];
     const allWarnings = [...missingKeysReport.warnings, ...requiredKeysReport.warnings];
     
+    // Las claves vacías NO afectan el success - solo son información
     const success = allErrors.length === 0;
 
     return {
       success,
       errors: allErrors,
       warnings: allWarnings,
+      info: emptyKeysReport.emptyKeys, // Nueva sección para información
       metadata: {
         duration: Date.now() - startTime,
         rulesChecked: 1,
@@ -60,7 +65,8 @@ export class EqualityRule implements ValidationRule {
         filesCompared: files.length,
         totalKeys: masterKeyDictionary.size,
         ignoredKeys: ignoreKeys.length,
-        requiredKeys: requiredKeys.length
+        requiredKeys: requiredKeys.length,
+        emptyKeys: emptyKeysReport.emptyKeys.length // Metadata para estadísticas
       }
     };
   }
@@ -161,5 +167,71 @@ export class EqualityRule implements ValidationRule {
     );
 
     return { errors, warnings: [] };
+  }
+
+  // Detectar claves vacías (solo información, no afecta success)
+  private detectEmptyKeys(files: ConfigFile[], ignoreKeys: string[]): { emptyKeys: ValidationInfo[] } {
+    const emptyKeys: ValidationInfo[] = [];
+
+    files.forEach(file => {
+      const emptyKeysInFile = this.findEmptyKeysInObject(file.content, '', file.path, ignoreKeys);
+      emptyKeys.push(...emptyKeysInFile);
+    });
+
+    return { emptyKeys };
+  }
+
+  // Buscar claves vacías recursivamente en un objeto
+  private findEmptyKeysInObject(
+    obj: any, 
+    prefix: string, 
+    filePath: string, 
+    ignoreKeys: string[]
+  ): ValidationInfo[] {
+    const emptyKeys: ValidationInfo[] = [];
+
+    if (obj && typeof obj === 'object' && !Array.isArray(obj)) {
+      for (const [key, value] of Object.entries(obj)) {
+        const fullKey = prefix ? `${prefix}.${key}` : key;
+        
+        // Verificar si la clave debe ser ignorada
+        if (this.isKeyIgnored(fullKey, ignoreKeys)) {
+          continue;
+        }
+
+        // Verificar si el valor está vacío
+        if (this.isEmptyValue(value)) {
+          emptyKeys.push({
+            code: 'EMPTY_KEY',
+            message: `Key '${fullKey}' has empty value in ${filePath}`,
+            severity: 'info',
+            path: fullKey,
+            context: {
+              file: filePath,
+              key: fullKey,
+              value: value,
+              valueType: typeof value
+            }
+          });
+        }
+
+        // Recursivamente buscar en objetos anidados
+        if (value && typeof value === 'object' && !Array.isArray(value)) {
+          const nestedEmptyKeys = this.findEmptyKeysInObject(value, fullKey, filePath, ignoreKeys);
+          emptyKeys.push(...nestedEmptyKeys);
+        }
+      }
+    }
+
+    return emptyKeys;
+  }
+
+  // Verificar si un valor está vacío
+  private isEmptyValue(value: any): boolean {
+    if (value === null || value === undefined) return true;
+    if (typeof value === 'string' && value.trim() === '') return true;
+    if (Array.isArray(value) && value.length === 0) return true;
+    if (typeof value === 'object' && !Array.isArray(value) && Object.keys(value).length === 0) return true;
+    return false;
   }
 } 

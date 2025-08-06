@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>database</key>
+	<dict>
+		<key>host</key>
+		<string>localhost</string>
+		<key>port</key>
+		<integer>5432</integer>
+		<key>name</key>
+		<string>myapp</string>
+		<key>ssl</key>
+		<true/>
+	</dict>
+	<key>api</key>
+	<dict>
+		<key>host</key>
+		<string>0.0.0.0</string>
+		<key>port</key>
+		<integer>3000</integer>
+		<key>timeout</key>
+		<integer>30</integer>
+		<key>debug</key>
+		<false/>
+	</dict>
+	<key>redis</key>
+	<dict>
+		<key>host</key>
+		<string>localhost</string>
+		<key>port</key>
+		<integer>6379</integer>
+		<key>password</key>
+		<string></string>
+	</dict>
+	<key>logging</key>
+	<dict>
+		<key>level</key>
+		<string>info</string>
+		<key>format</key>
+		<string>json</string>
+		<key>output</key>
+		<string>stdout</string>
+	</dict>
+</dict>
+</plist> 

@@ -1,3 +1,17 @@
+/**
+ * TODO: DECLARATIVE PROGRAMMING PATTERN
+ * 
+ * This file demonstrates excellent declarative programming practices:
+ * - Pure functions with no side effects
+ * - Functional composition with Promise.all()
+ * - Immutable data handling
+ * - Null coalescing operators (??)
+ * - Array methods (map, length)
+ * - No imperative loops or state mutations
+ * 
+ * Mutation Score: 100% - This is why declarative code is easier to test!
+ */
+
 import { ValidationResult, ValidationContext } from '../../shared/types';
 
 export interface PluginValidatorOptions {

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <database>
+    <host>localhost</host>
+    <port>5432</port>
+    <name>myapp</name>
+    <ssl>true</ssl>
+  </database>
+  
+  <api>
+    <host>0.0.0.0</host>
+    <port>3000</port>
+    <timeout>30</timeout>
+    <debug>false</debug>
+  </api>
+  
+  <redis>
+    <host>localhost</host>
+    <port>6379</port>
+    <password></password>
+  </redis>
+  
+  <logging>
+    <level>info</level>
+    <format>json</format>
+    <output>stdout</output>
+  </logging>
+</config> 

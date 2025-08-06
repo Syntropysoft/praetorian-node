@@ -1,0 +1,28 @@
+# Praetorian configuration file for multi-format validation
+files:
+  - config.yaml
+  - config.json
+  - config.toml
+  - config.ini
+  - config.xml
+  - config.env
+  - config.properties
+  - config.hcl
+  - config.plist
+
+ignore_keys:
+  - debug
+  - temp
+  - password
+
+required_keys:
+  - database.host
+  - database.port
+  - api.host
+  - api.port
+  - logging.level
+
+environments:
+  dev: config-dev.yaml
+  prod: config-prod.yaml
+  staging: config-staging.yaml 
