@@ -22,7 +22,7 @@
 
 ## 🎉 **ALPHA-3 RELEASE HIGHLIGHTS**
 
-> **🚀 Praetorian CLI v0.0.2-alpha.3 - Major Improvements!**
+> **🚀 Praetorian CLI v0.0.2-alpha.4 - Major Improvements!**
 > 
 > **✅ NEW FEATURES & IMPROVEMENTS:**
 > - **🏗️ Clean Architecture** - Complete codebase reorganization with SOLID principles
@@ -242,6 +242,20 @@ environments:
 
 ## 🛠️ Usage
 
+### Available Commands
+
+```bash
+# Validate configuration files for key consistency
+praetorian validate [FILES] [OPTIONS]
+
+# Generate empty keys report
+praetorian empty-keys [FILES] [OPTIONS]
+
+# Initialize a new configuration file
+praetorian init [OPTIONS]
+
+```
+
 ### Basic Validation
 
 Validate that all configuration files have matching keys:
@@ -301,6 +315,73 @@ database:
 api:
   version: null
   port: null
+```
+
+### Empty Keys Report
+
+Generate a detailed report of empty keys in your configuration files:
+
+```bash
+# Basic empty keys report
+praetorian empty-keys
+
+# Environment-specific report
+praetorian empty-keys --env dev
+
+# Include actual empty values
+praetorian empty-keys --include-values
+
+# Group by file for better organization
+praetorian empty-keys --group-by-file
+
+# JSON output for automation
+praetorian empty-keys --output json
+
+# CSV output for spreadsheet analysis
+praetorian empty-keys --output csv
+```
+
+**Output example:**
+```
+🔍 Empty Keys Report:
+
+📊 Summary:
+  • Files analyzed: 9
+  • Total empty keys: 5
+  • Files with empty keys: 5
+
+📋 Empty Keys List:
+  • redis.password [config.yaml]
+  • redis.password [config.json]
+  • redis.password [config.toml]
+  • REDIS_PASSWORD [config.env]
+  • redis.password [config.properties]
+
+💡 Recommendations:
+  • Review empty keys to ensure they are intentional
+  • Consider using environment-specific values for empty keys
+  • Add empty keys to ignore list if they are expected
+  • Use --include-values to see actual empty values
+```
+
+**JSON Output:**
+```json
+{
+  "summary": {
+    "totalFiles": 9,
+    "totalEmptyKeys": 5,
+    "filesWithEmptyKeys": 5
+  },
+  "emptyKeys": [
+    {
+      "key": "redis.password",
+      "file": "config.yaml",
+      "value": "",
+      "valueType": "string",
+      "message": "Key 'redis.password' has empty value in config.yaml"
+    }
+  ]
+}
 ```
 
 ---
@@ -500,8 +581,8 @@ validate_configs:
 ### Connect With Us
 
 - 🌐 **[Website](https://syntropysoft.com)**
-- 📧 **[Contact](mailto:contact@syntropysoft.com)**
-- 💼 **[LinkedIn](https://www.linkedin.com/company/syntropysoft)**
+- 📧 **[Contact](mailto:gabriel70@gmail.com)**
+- 💼 **[LinkedIn](https://www.linkedin.com/in/gabriel-alejandro-gomez-652a5111/)**
 
 ---
 
