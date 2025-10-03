@@ -1,5 +1,5 @@
-import { EnvironmentManager, EnvironmentConfig, EnvironmentValidationResult } from '../src/shared/utils/EnvironmentManager';
-import { ConfigFile } from '../src/shared/types';
+import { EnvironmentManager, EnvironmentConfig, EnvironmentValidationResult } from '../../../src/shared/utils/EnvironmentManager';
+import { ConfigFile } from '../../../src/shared/types';
 
 // Mock fs and yaml modules
 jest.mock('fs');

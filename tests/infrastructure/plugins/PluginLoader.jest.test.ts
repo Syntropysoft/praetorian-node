@@ -1,8 +1,8 @@
-import { PluginLoader } from '../src/infrastructure/plugins/PluginLoader';
-import { PluginManager } from '../src/infrastructure/plugins/PluginManager';
+import { PluginLoader } from '../../../src/infrastructure/plugins/PluginLoader';
+import { PluginManager } from '../../../src/infrastructure/plugins/PluginManager';
 
 // Mock PluginManager
-jest.mock('../src/infrastructure/plugins/PluginManager');
+jest.mock('../../../src/infrastructure/plugins/PluginManager');
 
 // Mock console methods
 const originalConsoleLog = console.log;

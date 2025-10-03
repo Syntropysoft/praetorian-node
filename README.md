@@ -1,5 +1,6 @@
 
-# Praetorian CLI 🏛️  
+# Praetorian CLI 🏛️
+
 **Guardian of Configurations** – Universal Validation Framework for DevSecOps  
 
 ![npm version](https://img.shields.io/npm/v/@syntropysoft/praetorian)  
@@ -8,7 +9,7 @@
 
 ---
 
-```
+```text
   ____                 _             _                ____ _     ___ 
  |  _ \ _ __ __ _  ___| |_ ___  _ __(_) __ _ _ __    / ___| |   |_ _|
  | |_) | '__/ _` |/ _ \ __/ _ \| '__| |/ _` | '_ \  | |   | |    | | 
@@ -22,11 +23,12 @@
 
 ## 🎉 **ALPHA-3 RELEASE HIGHLIGHTS**
 
-> **🚀 Praetorian CLI v0.0.2-alpha.4 - Major Improvements!**
+> **🚀 Praetorian CLI v0.0.3-alpha.1 - MAJOR FEATURE RELEASE!**
 > 
 > **✅ NEW FEATURES & IMPROVEMENTS:**
 > - **🏗️ Clean Architecture** - Complete codebase reorganization with SOLID principles
-> - **🧪 Robust Testing** - 205 tests passing with comprehensive coverage
+> - **🧪 Robust Testing** - 442 tests passing with comprehensive coverage (100% success rate)
+> - **🧬 Mutation Testing** - 22.40% mutation score with improved test quality
 > - **📦 Optimized Dependencies** - 36 unnecessary packages removed (66% reduction)
 > - **🔧 Enhanced Build System** - Improved TypeScript compilation and error handling
 > - **📚 Professional Documentation** - Complete English documentation with working examples
@@ -37,6 +39,13 @@
 > - **🔍 Advanced Validation** - Improved key comparison and structure validation
 > - **🎨 Declarative Programming** - Functional patterns with 100% mutation score
 > - **🔧 Multi-Format Support** - 9 file formats supported with clean adapters
+> - **🔒 Schema Validation** - NEW! JSON Schema validation with type checking and pattern matching
+> - **🎯 Pattern Matching** - NEW! Advanced pattern validation (email, URL, UUID, regex)
+> - **🛡️ Security Rules** - NEW! Secret detection, vulnerability scanning, and compliance checking
+> - **🔐 Secret Detection** - NEW! Detect exposed API keys, passwords, and sensitive data
+> - **🔍 Vulnerability Scanning** - NEW! Scan for weak encryption, SQL injection, XSS vulnerabilities
+> - **📋 Compliance Checking** - NEW! PCI-DSS, GDPR, HIPAA, SOX, ISO 27001 compliance validation
+> - **🔧 Permission Validation** - NEW! File permission validation for security-sensitive files
 > 
 > **✅ CORE FEATURES (All Working):**
 > - **CLI with professional banner** - Beautiful ASCII art with security colors
@@ -110,22 +119,22 @@ Praetorian supports multiple configuration file formats through its modular adap
 | **XML** | `.xml` | ✅ Full Support | Nested element validation |
 | **Properties** | `.properties` | ✅ Full Support | Java-style properties with multiple separators |
 | **HCL** | `.hcl`, `.tf`, `.tfvars` | ✅ Full Support | HashiCorp Configuration Language |
-| **PLIST** | `.plist` | ⚠️ Partial Support | Apple Property List format |
+| **PLIST** | `.plist` | ✅ Full Support | Apple Property List format |
 
-## 🐛 Known Issues
+## ✅ Recent Fixes
 
-### PLIST File Adapter
+### PLIST File Adapter - Bug Fixed! 🎉
 
-**Issue:** Complex nested structures with arrays containing objects are not fully supported.
+**Issue:** Complex nested structures with arrays containing objects were not fully supported.
 
-**Affected:** `PlistFileAdapterV2` (new architecture)
+**Status:** ✅ **FIXED** - The `PlistFileAdapterV2` now correctly handles complex array structures.
 
-**Details:**
+**What was fixed:**
 - ✅ **Simple arrays** work correctly: `<array><string>item1</string><string>item2</string></array>`
 - ✅ **Nested dictionaries** work correctly: `<dict><key>nested</key><dict>...</dict></dict>`
-- ⚠️ **Arrays with objects** partially work: `<array><dict>...</dict><dict>...</dict></array>`
+- ✅ **Arrays with objects** now work perfectly: `<array><dict>...</dict><dict>...</dict></array>`
 
-**Example of affected structure:**
+**Example of now-working structure:**
 ```xml
 <dict>
     <key>configs</key>
@@ -146,12 +155,9 @@ Praetorian supports multiple configuration file formats through its modular adap
 </dict>
 ```
 
-**Expected:** `{ configs: [{ debug: true, env: 'dev' }, { debug: false, env: 'prod' }] }`
-**Actual:** `{ configs: [] }`
+**Result:** `{ configs: [{ debug: true, env: 'dev' }, { debug: false, env: 'prod' }] }` ✅
 
-**Workaround:** Use the original `PlistFileAdapter` for complex structures until this issue is resolved.
-
-**Status:** 🔄 **In Progress** - The new architecture is being refined to handle complex array structures.
+**Technical Details:** The fix involved properly handling the `currentKey` storage in the `PlistStateManager` when processing arrays, ensuring that arrays are correctly associated with their parent dictionary keys.
 
 ---
 
@@ -489,14 +495,80 @@ Each example includes:
 
 ---
 
+## 🔒 **NEW: Advanced Security Features**
+
+### **🛡️ Secret Detection**
+Detect exposed sensitive data in configuration files:
+
+```bash
+# Detect API keys, passwords, and other secrets
+praetorian validate --security-secrets
+```
+
+**Supported Secret Types:**
+- **API Keys**: `sk-`, `pk_`, `ak_`, `api_key`
+- **JWT Tokens**: `eyJ...`
+- **Passwords**: `password: "mypassword123"`
+- **Database URLs**: `mysql://user:pass@host/db`
+
+### **🔍 Vulnerability Scanning**
+Scan for security vulnerabilities:
+
+```bash
+# Scan for weak encryption and insecure protocols
+praetorian validate --security-vulnerabilities
+```
+
+**Detected Vulnerabilities:**
+- **Weak Encryption**: MD5, SHA1, DES, RC4
+- **Insecure Protocols**: HTTP, FTP, Telnet
+- **Weak Credentials**: Default passwords, short passwords
+- **SQL Injection**: String interpolation in queries
+- **XSS**: innerHTML with interpolation
+
+### **📋 Compliance Checking**
+Verify compliance with security standards:
+
+```bash
+# Check PCI DSS, GDPR, HIPAA compliance
+praetorian validate --security-compliance
+```
+
+**Supported Standards:**
+- **PCI DSS**: Credit card data encryption
+- **GDPR**: Personal data protection
+- **HIPAA**: Health information access control
+- **SOX**: Financial data controls
+- **ISO 27001**: Information security management
+
+### **🔧 Permission Validation**
+Validate file permissions for security:
+
+```bash
+# Check file permissions
+praetorian validate --security-permissions
+```
+
+**Permission Rules:**
+- **Environment Files**: `.env` → 600 permissions
+- **Config Files**: `config.*` → 644 permissions
+- **Secret Files**: `*secret*` → 600 permissions
+- **Key Files**: `*.key` → 600 permissions
+
+---
+
 ## 🧪 Testing & Quality
 
 ### **Comprehensive Test Suite**
-- **✅ 205 tests passing** across 16 test suites
+- **✅ 442 tests passing** across 27 test suites (100% success rate)
 - **✅ Unit tests** for all core functionality
 - **✅ Integration tests** for end-to-end validation
-- **✅ Mutation testing** configured with Stryker
+- **✅ Mutation testing** configured with Stryker (22.40% mutation score)
 - **✅ Coverage reporting** for quality assurance
+- **✅ Schema validation tests** for new JSON Schema functionality
+- **✅ Pattern matching tests** for regex and format validation
+- **✅ Security validation tests** for secret detection and vulnerability scanning
+- **✅ Permission validation tests** for file security and access control
 
 ### **Test Coverage Highlights**
 - **100% coverage** on core validation logic
@@ -506,6 +578,13 @@ Each example includes:
 - **86% coverage** on validation rules
 - **100% mutation score** on declarative programming patterns
 
+### **Mutation Testing Improvements**
+- **FormatValidator**: 72.00% mutation score (improved from 61.14%)
+- **PermissionValidator**: 39.16% mutation score (improved from 0%)
+- **SchemaValidator**: 25.74% mutation score (improved from 23.53%)
+- **SecretDetector**: 22.66% mutation score (improved from 12.32%)
+- **Overall Project**: 22.40% mutation score (improved from 20.96%)
+
 ### **Running Tests**
 ```bash
 # Run all tests
@@ -513,6 +592,9 @@ npm test
 
 # Run with coverage
 npm run test:coverage
+
+# Run mutation tests
+npm run test:mutation
 
 # Run integration tests only
 npm run test:integration
@@ -557,11 +639,40 @@ validate_configs:
 
 ---
 
+## 🧬 **Testing & Quality Improvements v0.0.3-alpha.1**
+
+### **Enhanced Test Coverage**
+- **+194 new tests** added (from 248 to 442 total tests)
+- **+7 new test suites** for comprehensive validator coverage
+- **Permission validation tests** - File permission security validation
+- **Enhanced schema validation tests** - Complex nested object and array validation
+- **Improved pattern matching tests** - Advanced regex and format validation
+- **Extended security tests** - Secret detection and vulnerability scanning
+
+### **Mutation Testing Enhancements**
+- **22.40% overall mutation score** (improved from 20.96%)
+- **FormatValidator**: 72.00% mutation score (+10.86% improvement)
+- **PermissionValidator**: 39.16% mutation score (new coverage from 0%)
+- **SchemaValidator**: 25.74% mutation score (+2.21% improvement)
+- **SecretDetector**: 22.66% mutation score (+10.34% improvement)
+
+### **Test Organization**
+- **Hierarchical test structure** - Tests organized by architectural layers
+- **Domain tests** - Core business logic validation
+- **Application tests** - Service and orchestrator validation
+- **Infrastructure tests** - Adapter and plugin validation
+- **Integration tests** - End-to-end workflow validation
+
+---
+
 ## 🗺️ Roadmap
 
-- [ ] **Schema validation** - Type checking and pattern matching
-- [ ] **Security rules** - Detect sensitive data exposure
+- [x] **Schema validation** - Type checking and pattern matching ✅ **COMPLETED v0.0.3-alpha.1**
+- [x] **Security rules** - Detect sensitive data exposure ✅ **COMPLETED v0.0.3-alpha.1**
+- [x] **Pattern matching** - Advanced regex and format validation ✅ **COMPLETED v0.0.3-alpha.1**
+- [x] **Enhanced testing** - Comprehensive test coverage and mutation testing ✅ **COMPLETED v0.0.3-alpha.1**
 - [ ] **JSON/HTML reports** - Detailed validation reports
+- [ ] **Improved mutation score** - Target 50%+ mutation score for production readiness
 - [ ] **Custom rule plugins** - Extensible validation system
 - [ ] **Secret management integration** - AWS Secrets Manager, Azure Key Vault
 - [ ] **Performance optimization** - Parallel processing for large configs

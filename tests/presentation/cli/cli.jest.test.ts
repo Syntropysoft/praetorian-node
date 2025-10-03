@@ -1,4 +1,4 @@
-import { runValidation } from '../src/application/orchestrators/ValidationOrchestrator';
+import { runValidation } from '../../../src/application/orchestrators/ValidationOrchestrator';
 
 // Mock console methods
 const originalConsoleLog = console.log;

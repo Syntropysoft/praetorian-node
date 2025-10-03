@@ -272,7 +272,12 @@ class PlistStateManager {
   
   private startArray(): void {
     const array: any[] = [];
-    this.stack.push({ type: 'array', data: array });
+    this.stack.push({ 
+      type: 'array', 
+      data: array,
+      key: this.currentKey || undefined // Store the key that this array belongs to
+    });
+    this.currentKey = null; // Clear the key since we're starting a new array
   }
   
   private endArray(): void {
@@ -280,7 +285,21 @@ class PlistStateManager {
     
     const array = this.stack.pop()!;
     if (array.type === 'array') {
-      this.addValue(array.data);
+      // If we're at root level (stack is now empty), add directly to result
+      if (this.stack.length === 0) {
+        if (array.key) {
+          this.result[array.key] = array.data;
+        }
+        return;
+      }
+      
+      // Add the array to the parent context using the stored key
+      const parent = this.stack[this.stack.length - 1];
+      if (parent.type === 'dict' && array.key) {
+        parent.data[array.key] = array.data;
+      } else if (parent.type === 'array') {
+        parent.data.push(array.data);
+      }
     }
   }
   

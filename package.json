@@ -1,6 +1,6 @@
 {
   "name": "@syntropysoft/praetorian",
-  "version": "0.0.2-alpha.3",
+  "version": "0.0.3-alpha.1",
   "description": "Praetorian CLI – A universal multi-environment configuration validator for DevSecOps teams. Validate, compare, and secure YAML/ENV files with ease.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

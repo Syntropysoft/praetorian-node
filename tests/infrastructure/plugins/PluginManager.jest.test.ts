@@ -1,9 +1,9 @@
-import { PluginManager } from '../src/infrastructure/plugins/PluginManager';
-import { BasePlugin } from '../src/infrastructure/plugins/base/BasePlugin';
-import { PluginMetadata } from '../src/shared/types';
+import { PluginManager } from '../../../src/infrastructure/plugins/PluginManager';
+import { BasePlugin } from '../../../src/infrastructure/plugins/base/BasePlugin';
+import { PluginMetadata } from '../../../src/shared/types';
 
 // Mock BasePlugin
-jest.mock('../src/infrastructure/plugins/base/BasePlugin');
+jest.mock('../../../src/infrastructure/plugins/base/BasePlugin');
 
 // Mock Plugin class for testing
 class MockPlugin extends BasePlugin {

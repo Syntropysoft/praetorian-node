@@ -1,9 +1,9 @@
-import { HealthChecker } from '../src/infrastructure/plugins/HealthChecker';
-import { PluginManager } from '../src/infrastructure/plugins/PluginManager';
-import { BasePlugin } from '../src/infrastructure/plugins/base/BasePlugin';
+import { HealthChecker } from '../../../src/infrastructure/plugins/HealthChecker';
+import { PluginManager } from '../../../src/infrastructure/plugins/PluginManager';
+import { BasePlugin } from '../../../src/infrastructure/plugins/base/BasePlugin';
 
 // Mock PluginManager
-jest.mock('../src/infrastructure/plugins/PluginManager');
+jest.mock('../../../src/infrastructure/plugins/PluginManager');
 
 // Mock BasePlugin
 class MockPlugin extends BasePlugin {

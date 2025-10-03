@@ -1,5 +1,5 @@
-import { EqualityRule } from '../src/domain/rules/EqualityRule';
-import { ConfigFile } from '../src/shared/types';
+import { EqualityRule } from '../../../src/domain/rules/EqualityRule';
+import { ConfigFile } from '../../../src/shared/types';
 
 describe('EqualityRule', () => {
   let equalityRule: EqualityRule;

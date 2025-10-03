@@ -7,6 +7,7 @@ export interface ValidationResult {
   errors: ValidationError[];
   warnings: ValidationWarning[];
   info?: ValidationInfo[]; // Nueva sección para información (claves vacías)
+  results?: any[]; // Detailed results for each validation
   metadata?: {
     duration?: number;
     rulesChecked?: number;
@@ -20,7 +21,7 @@ export interface ValidationResult {
 export interface ValidationError {
   code: string;
   message: string;
-  severity: 'error' | 'warning';
+  severity: 'error' | 'warning' | 'info';
   path?: string;
   context?: any;
 }
@@ -149,4 +150,13 @@ export interface PluginMetadata {
 }
 
 // Legacy ValidationRule interface for backward compatibility
+
+// Schema Validation Types
+export * from './schema';
+
+// Pattern Matching Types
+export * from './pattern';
+
+// Security Types
+export * from './security';
  

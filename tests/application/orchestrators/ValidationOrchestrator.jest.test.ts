@@ -1,10 +1,10 @@
-import { ValidationOrchestrator, ValidationOptions, ValidationResult } from '../src/application/orchestrators/ValidationOrchestrator';
-import { EnvironmentManager } from '../src/shared/utils/EnvironmentManager';
-import { EqualityRule } from '../src/domain/rules/EqualityRule';
+import { ValidationOrchestrator, ValidationOptions, ValidationResult } from '../../../src/application/orchestrators/ValidationOrchestrator';
+import { EnvironmentManager } from '../../../src/shared/utils/EnvironmentManager';
+import { EqualityRule } from '../../../src/domain/rules/EqualityRule';
 
 // Mock dependencies
-jest.mock('../src/shared/utils/EnvironmentManager');
-jest.mock('../src/domain/rules/EqualityRule');
+jest.mock('../../../src/shared/utils/EnvironmentManager');
+jest.mock('../../../src/domain/rules/EqualityRule');
 jest.mock('fs');
 jest.mock('yaml');
 

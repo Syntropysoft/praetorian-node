@@ -1,5 +1,5 @@
-import { ResultBuilder } from '../src/shared/utils/ResultBuilder';
-import { ValidationResult } from '../src/shared/types';
+import { ResultBuilder } from '../../../src/shared/utils/ResultBuilder';
+import { ValidationResult } from '../../../src/shared/types';
 
 describe('ResultBuilder', () => {
   let resultBuilder: ResultBuilder;

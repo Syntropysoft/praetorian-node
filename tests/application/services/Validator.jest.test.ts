@@ -1,15 +1,15 @@
-import { Validator } from '../src/application/services/Validator';
-import { PluginLoader } from '../src/infrastructure/plugins/PluginLoader';
-import { HealthChecker } from '../src/infrastructure/plugins/HealthChecker';
-import { PluginValidator } from '../src/application/validators/PluginValidator';
-import { ResultBuilder } from '../src/shared/utils/ResultBuilder';
-import { ValidationContext } from '../src/shared/types';
+import { Validator } from '../../../src/application/services/Validator';
+import { PluginLoader } from '../../../src/infrastructure/plugins/PluginLoader';
+import { HealthChecker } from '../../../src/infrastructure/plugins/HealthChecker';
+import { PluginValidator } from '../../../src/application/validators/PluginValidator';
+import { ResultBuilder } from '../../../src/shared/utils/ResultBuilder';
+import { ValidationContext } from '../../../src/shared/types';
 
 // Mock dependencies
-jest.mock('../src/infrastructure/plugins/PluginLoader');
-jest.mock('../src/infrastructure/plugins/HealthChecker');
-jest.mock('../src/application/validators/PluginValidator');
-jest.mock('../src/shared/utils/ResultBuilder');
+jest.mock('../../../src/infrastructure/plugins/PluginLoader');
+jest.mock('../../../src/infrastructure/plugins/HealthChecker');
+jest.mock('../../../src/application/validators/PluginValidator');
+jest.mock('../../../src/shared/utils/ResultBuilder');
 
 describe('Validator', () => {
   let validator: Validator;

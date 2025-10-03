@@ -1,4 +1,4 @@
-import { AuditEngine } from '../src/application/services/AuditEngine';
+import { AuditEngine } from '../../../src/application/services/AuditEngine';
 
 describe('AuditEngine', () => {
   let auditEngine: AuditEngine;

@@ -1,5 +1,5 @@
-import { PluginValidator } from '../src/application/validators/PluginValidator';
-import { ValidationContext } from '../src/shared/types';
+import { PluginValidator } from '../../../src/application/validators/PluginValidator';
+import { ValidationContext } from '../../../src/shared/types';
 
 describe('PluginValidator', () => {
   let pluginValidator: PluginValidator;
