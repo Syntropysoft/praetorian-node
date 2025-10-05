@@ -118,10 +118,20 @@ jobs:
       - name: 🔧 Build project
         run: npm run build
 
-      - name: 📦 Publish to NPM
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: 📦 NPM Publish (Manual)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "📦 NPM Publishing is currently DISABLED for manual control"
+          echo ""
+          echo "🚀 To publish manually:"
+          echo "   1. Build: npm run build"
+          echo "   2. Test: npm test"
+          echo "   3. Publish: npm publish --access public"
+          echo ""
+          echo "📋 Package: @syntropysoft/praetorian"
+          echo "📝 Version: v0.0.4-alpha"
+          echo ""
+          echo "✅ All checks passed - Ready for manual publishing!"
 
       - name: 🏷️ Create GitHub Release
         uses: softprops/action-gh-release@v2
