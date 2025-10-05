@@ -3,19 +3,19 @@
 
 **Guardian of Configurations** – Universal Validation Framework for DevSecOps
 
-> ⚠️ **NOTICE**: This is an **ALPHA** release. While thoroughly tested with 991+ tests and 38.32% mutation score, it's still under active development. Use in production with caution.
+> ⚠️ **NOTICE**: This is an **ALPHA** release. While thoroughly tested with 1225+ tests and 38.32% mutation score, it's still under active development. Use in production with caution.
 
 > 🚀 **LATEST**: v0.0.4-alpha with **Pipeline Mode** support for CI/CD integration!  
 
-![npm version](https://img.shields.io/npm/v/@syntropysoft/praetorian)  
-![license](https://img.shields.io/npm/l/@syntropysoft/praetorian?color=blue)  
-![build status](https://img.shields.io/github/actions/workflow/status/Syntropysoft/praetorian/ci.yml)  
-![CodeQL](https://github.com/Syntropysoft/praetorian/workflows/CodeQL/badge.svg)  
-![Dependabot](https://api.dependabot.com/badges/status?dependency-manager=npm&package-manager=npm)  
-![Mutation Score](https://img.shields.io/badge/mutation%20score-38.32%25-brightgreen)  
-![Test Coverage](https://img.shields.io/badge/test%20coverage-1201%20tests-brightgreen)  
-![Bundle Size](https://img.shields.io/bundlephobia/min/@syntropysoft/praetorian)  
-![Production Ready](https://img.shields.io/badge/production%20ready-alpha-orange)
+[![npm version](https://img.shields.io/npm/v/@syntropysoft/praetorian?style=flat-square)](https://www.npmjs.com/package/@syntropysoft/praetorian)  
+[![license](https://img.shields.io/npm/l/@syntropysoft/praetorian?color=blue&style=flat-square)](https://github.com/Syntropysoft/praetorian/blob/main/LICENSE)  
+[![build status](https://img.shields.io/github/actions/workflow/status/Syntropysoft/praetorian/ci.yml?branch=main&style=flat-square)](https://github.com/Syntropysoft/praetorian/actions/workflows/ci.yml)  
+[![CodeQL](https://github.com/Syntropysoft/praetorian/actions/workflows/codeql.yml/badge.svg)](https://github.com/Syntropysoft/praetorian/actions/workflows/codeql.yml)  
+[![Dependabot](https://api.dependabot.com/badges/status?dependency-manager=npm&package-manager=npm&repository=Syntropysoft/praetorian)](https://dependabot.com)  
+[![Mutation Score](https://img.shields.io/badge/mutation%20score-38.32%25-brightgreen?style=flat-square)](https://stryker-mutator.io)  
+[![Test Coverage](https://img.shields.io/badge/test%20coverage-1225%20tests-brightgreen?style=flat-square)](https://github.com/Syntropysoft/praetorian/actions/workflows/ci.yml)  
+[![Bundle Size](https://img.shields.io/bundlephobia/min/@syntropysoft/praetorian?style=flat-square)](https://bundlephobia.com/package/@syntropysoft/praetorian)  
+[![Production Ready](https://img.shields.io/badge/production%20ready-alpha-orange?style=flat-square)](https://github.com/Syntropysoft/praetorian/releases)
 
 ---
 
