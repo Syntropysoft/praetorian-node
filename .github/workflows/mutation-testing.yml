@@ -43,32 +43,8 @@ jobs:
 
       - name: 📈 Comment mutation score on PR
         if: github.event_name == 'pull_request'
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const fs = require('fs');
-            const path = require('path');
-            
-            try {
-              // Try to read mutation test results
-              const reportPath = path.join('reports', 'mutation', 'mutation.html');
-              if (fs.existsSync(reportPath)) {
-                const body = `## 🧬 Mutation Testing Results
-                
-                Mutation testing has been completed. Check the [mutation report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) for detailed results.
-                
-                📊 **Current Mutation Score**: Available in the detailed report
-                🎯 **Target**: 50%+ for production readiness
-                
-                > Note: This is an automated comment from the mutation testing workflow.`;
-                
-                github.rest.issues.createComment({
-                  issue_number: context.issue.number,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  body: body
-                });
-              }
-            } catch (error) {
-              console.log('Could not create mutation testing comment:', error.message);
-            }
+        run: |
+          echo "🧬 Mutation Testing Results"
+          echo "Mutation testing has been completed. Check the workflow run for detailed results."
+          echo "📊 Current Mutation Score: Available in the detailed report"
+          echo "🎯 Target: 50%+ for production readiness"

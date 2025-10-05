@@ -31,9 +31,6 @@ jobs:
 
       - name: 🤖 Auto-merge Dependabot PR
         if: github.actor == 'dependabot[bot]'
-        uses: fastify/github-action-merge-dependabot@v3
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          target: minor
-          merge-method: squash
-          approval: ${{ github.actor == 'dependabot[bot]' }}
+        run: |
+          echo "Dependabot PR detected, but auto-merge is disabled for manual review"
+          echo "Please review and merge manually if tests pass"
