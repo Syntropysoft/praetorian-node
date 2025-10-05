@@ -1,0 +1,114 @@
+name: 🚀 Release
+
+on:
+  push:
+    tags: [ 'v*' ]
+
+env:
+  NODE_VERSION: '18'
+  NPM_VERSION: '9'
+
+jobs:
+  release:
+    name: 🚀 Create Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🔧 Build project
+        run: npm run build
+
+      - name: 🧪 Run tests
+        run: npm test
+
+      - name: 📦 Publish to NPM
+        if: secrets.NPM_TOKEN != ''
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: ⚠️ Skip NPM Publish (No Token)
+        if: secrets.NPM_TOKEN == ''
+        run: |
+          echo "⚠️  Skipping NPM publish - NPM_TOKEN secret not configured"
+          echo "📋 To enable automatic publishing:"
+          echo "   1. Generate NPM token with 2FA: npm token create"
+          echo "   2. Add NPM_TOKEN secret to repository settings"
+          echo "   3. Token should have 'Automation' scope for CI/CD"
+          echo ""
+          echo "🔗 Repository: ${{ github.repository }}"
+          echo "📦 Package: @syntropysoft/praetorian"
+          echo "📝 Version: ${{ github.ref_name }}"
+
+      - name: 🏷️ Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: true
+          body: |
+            ## 🚀 Praetorian CLI ${{ github.ref_name }} Release
+
+            ### ✨ New Features
+            - **Pipeline Mode** - CI/CD friendly output with `--pipeline` flag
+            - **Dual Output Modes** - User-friendly detailed output + concise pipeline output
+            - **DevSecOps Integration** - Ready for Jenkins, GitHub Actions, Dockerfile, Makefile
+            - **Comprehensive Testing** - 1,225 tests with 38.32% mutation score
+
+            ### 🔧 Improvements
+            - Enhanced CLI with professional banner
+            - Better error handling and validation
+            - SOLID architecture with functional programming patterns
+            - Guard clauses throughout the codebase
+
+            ### 📦 Installation
+            ```bash
+            npm install -g @syntropysoft/praetorian@${{ github.ref_name }}
+            ```
+
+            ### 🚀 Usage
+            ```bash
+            # User mode (detailed output)
+            praetorian validate --config praetorian.yaml
+
+            # Pipeline mode (CI/CD friendly)
+            praetorian validate --config praetorian.yaml --pipeline
+
+            # Initialize configuration
+            praetorian init
+
+            # Initialize for DevSecOps
+            praetorian init --devsecops
+            ```
+
+            ### 📋 What's New
+            - **Alpha Release** - Thoroughly tested but still under active development
+            - **Production Ready** - Suitable for CI/CD pipelines and development workflows
+            - **Extensible** - Easy to add custom rules and validators
+            - **Fast** - Optimized for performance in large codebases
+
+            ### 🔗 Links
+            - 📦 [NPM Package](https://www.npmjs.com/package/@syntropysoft/praetorian)
+            - 📚 [Documentation](https://github.com/${{ github.repository }}#readme)
+            - 🐛 [Report Issues](https://github.com/${{ github.repository }}/issues)
+
+            ---
+            **Note**: This is an alpha release. While thoroughly tested, use in production with caution.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

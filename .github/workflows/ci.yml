@@ -133,41 +133,6 @@ jobs:
           echo ""
           echo "✅ All checks passed - Ready for manual publishing!"
 
-      - name: 🏷️ Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
-          draft: false
-          prerelease: true
-          body: |
-            ## 🚀 Praetorian CLI ${{ github.ref_name }} Release
-
-            ### ✨ New Features
-            - **Pipeline Mode** - CI/CD friendly output with `--pipeline` flag
-            - **Dual Output Modes** - User-friendly detailed output + concise pipeline output
-            - **DevSecOps Integration** - Ready for Jenkins, GitHub Actions, Dockerfile, Makefile
-
-            ### 🔧 Improvements
-            - Enhanced CLI with professional banner
-            - Improved test coverage (1,201 tests)
-            - Better error handling and validation
-
-            ### 📦 Installation
-            ```bash
-            npm install -g @syntropysoft/praetorian
-            ```
-
-            ### 🚀 Usage
-            ```bash
-            # User mode (detailed output)
-            praetorian validate --config praetorian.yaml
-
-            # Pipeline mode (CI/CD friendly)
-            praetorian validate --config praetorian.yaml --pipeline
-            ```
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # 📊 Security Audit
   security-audit:
