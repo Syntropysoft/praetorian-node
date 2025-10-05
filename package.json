@@ -62,7 +62,8 @@
     "LICENSE"
   ],
   "devDependencies": {
-    "@stryker-mutator/jest-runner": "^8.7.1",
+    "@stryker-mutator/core": "^9.2.0",
+    "@stryker-mutator/jest-runner": "^9.2.0",
     "@types/inquirer": "^9.0.8",
     "@types/jest": "^30.0.0",
     "@types/js-yaml": "^4.0.9",
