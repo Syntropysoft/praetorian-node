@@ -37,23 +37,23 @@ jobs:
         run: npm test
 
       - name: 📦 Publish to NPM
-        if: secrets.NPM_TOKEN != ''
-        run: npm publish --access public
+        run: |
+          if [ -n "$NODE_AUTH_TOKEN" ]; then
+            echo "🔑 Publishing to NPM with token..."
+            npm publish --access public
+          else
+            echo "⚠️  Skipping NPM publish - NPM_TOKEN secret not configured"
+            echo "📋 To enable automatic publishing:"
+            echo "   1. Generate NPM token with 2FA: npm token create"
+            echo "   2. Add NPM_TOKEN secret to repository settings"
+            echo "   3. Token should have 'Automation' scope for CI/CD"
+            echo ""
+            echo "🔗 Repository: ${{ github.repository }}"
+            echo "📦 Package: @syntropysoft/praetorian"
+            echo "📝 Version: ${{ github.ref_name }}"
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: ⚠️ Skip NPM Publish (No Token)
-        if: secrets.NPM_TOKEN == ''
-        run: |
-          echo "⚠️  Skipping NPM publish - NPM_TOKEN secret not configured"
-          echo "📋 To enable automatic publishing:"
-          echo "   1. Generate NPM token with 2FA: npm token create"
-          echo "   2. Add NPM_TOKEN secret to repository settings"
-          echo "   3. Token should have 'Automation' scope for CI/CD"
-          echo ""
-          echo "🔗 Repository: ${{ github.repository }}"
-          echo "📦 Package: @syntropysoft/praetorian"
-          echo "📝 Version: ${{ github.ref_name }}"
 
       - name: 🏷️ Create GitHub Release
         uses: softprops/action-gh-release@v2
