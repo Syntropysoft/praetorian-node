@@ -11,13 +11,13 @@
  */
 
 import { EqualityRule } from '../../domain/rules/EqualityRule';
-import { SchemaValidationRule } from '../../domain/rules/SchemaValidationRule';
+// import { SchemaValidationRule } from '../../domain/rules/SchemaValidationRule'; // Removed - unused
 import { ValidationContext } from '../../shared/types';
 import { EnvironmentManager } from '../../shared/utils/EnvironmentManager';
 import { ConfigLoaderService, ConfigFile } from '../services/ConfigLoaderService';
 import { StructureGeneratorService } from '../services/StructureGeneratorService';
 import { ValidationService } from '../services/ValidationService';
-import { CommonSchemas } from '../../infrastructure/schemas/CommonSchemas';
+// import { CommonSchemas } from '../../infrastructure/schemas/CommonSchemas'; // Removed - unused
 
 export interface ValidationResult {
   success: boolean;
@@ -255,32 +255,11 @@ export class ValidationOrchestratorRefactored {
 
   /**
    * Get schema rules based on options
+   * NOTE: SchemaValidationRule and CommonSchemas were removed as unused
    */
-  private getSchemaRules(requestedRules?: string[]): SchemaValidationRule[] {
-    const allRules = CommonSchemas.getAllCommonRules();
-    
-    if (!requestedRules || requestedRules.length === 0) {
-      return allRules.map(rule => new SchemaValidationRule(
-        rule.id,
-        rule.description,
-        rule.description,
-        [rule],
-        'best-practice',
-        'error'
-      ));
-    }
-
-    return requestedRules
-      .map(ruleId => allRules.find(rule => rule.id === ruleId))
-      .filter((rule): rule is typeof rule & {} => rule !== undefined)
-      .map(rule => new SchemaValidationRule(
-        rule.id,
-        rule.description,
-        rule.description,
-        [rule],
-        'best-practice',
-        'error'
-      ));
+  private getSchemaRules(requestedRules?: string[]): any[] {
+    // Return empty array since schema validation is not implemented
+    return [];
   }
 }
 

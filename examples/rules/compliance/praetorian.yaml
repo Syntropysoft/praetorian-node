@@ -1,0 +1,113 @@
+# Compliance Rules Example
+# This example demonstrates compliance validation rules for GDPR, PCI DSS, HIPAA, etc.
+
+name: "Compliance Rules Example"
+version: "1.0.0"
+description: "Example showing compliance validation rules for regulatory requirements"
+
+# Files to validate
+files:
+  - "config-dev.yaml"
+  - "config-prod.yaml"
+  - "config-staging.yaml"
+
+# Compliance-specific validation options
+strict: true
+
+# Rules configuration
+rules:
+  # GDPR Compliance Rules
+  - id: "gdpr-data-protection"
+    name: "GDPR Data Protection"
+    description: "Ensure GDPR compliance for personal data handling"
+    category: "compliance"
+    severity: "error"
+    enabled: true
+    config:
+      standards: ["GDPR"]
+      requiredFeatures:
+        - "data-encryption"
+        - "consent-management"
+        - "data-retention"
+        - "breach-notification"
+        - "right-to-erasure"
+      personalDataFields:
+        - "email"
+        - "phone"
+        - "address"
+        - "name"
+        - "ssn"
+        - "creditCard"
+
+  # PCI DSS Compliance Rules
+  - id: "pci-dss-compliance"
+    name: "PCI DSS Compliance"
+    description: "Ensure PCI DSS compliance for payment card data"
+    category: "compliance"
+    severity: "error"
+    enabled: true
+    config:
+      standards: ["PCI-DSS"]
+      requiredFeatures:
+        - "card-data-encryption"
+        - "secure-transmission"
+        - "access-control"
+        - "network-security"
+        - "vulnerability-management"
+      paymentFields:
+        - "creditCard"
+        - "cardNumber"
+        - "cvv"
+        - "expiryDate"
+
+  # HIPAA Compliance Rules
+  - id: "hipaa-compliance"
+    name: "HIPAA Compliance"
+    description: "Ensure HIPAA compliance for healthcare data"
+    category: "compliance"
+    severity: "error"
+    enabled: true
+    config:
+      standards: ["HIPAA"]
+      requiredFeatures:
+        - "phi-encryption"
+        - "access-controls"
+        - "audit-logs"
+        - "business-associate-agreements"
+        - "workforce-training"
+      phiFields:
+        - "patientId"
+        - "medicalRecord"
+        - "diagnosis"
+        - "treatment"
+
+  # SOX Compliance Rules
+  - id: "sox-compliance"
+    name: "SOX Compliance"
+    description: "Ensure SOX compliance for financial reporting"
+    category: "compliance"
+    severity: "error"
+    enabled: true
+    config:
+      standards: ["SOX"]
+      requiredFeatures:
+        - "internal-controls"
+        - "financial-reporting"
+        - "audit-trails"
+        - "management-certification"
+        - "real-time-disclosure"
+
+# Required keys for compliance
+required_keys:
+  - "compliance"
+  - "dataProtection"
+  - "encryption"
+  - "audit"
+  - "accessControl"
+
+# Forbidden keys that violate compliance
+forbidden_keys:
+  - "unencryptedData"
+  - "publicData"
+  - "noConsent"
+  - "permanentData"

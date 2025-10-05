@@ -7,14 +7,13 @@
 
 // Domain Layer
 export * from './domain/rules/EqualityRule';
-export * from './domain/rules/PatternMatchingRule';
-export * from './domain/rules/SecurityRule';
 
 // Application Layer
 export * from './application/orchestrators/ValidationOrchestratorRefactored';
 export * from './application/services/Validator';
 export * from './application/services/AuditEngine';
 export * from './application/services/AuditCalculator';
+export * from './application/services/RuleLoaderService';
 export * from './application/validators/PluginValidator';
 export * from './application/validators/SchemaValidator';
 export * from './application/validators/TypeValidator';
@@ -35,8 +34,6 @@ export * from './infrastructure/plugins/HealthChecker';
 export * from './infrastructure/plugins/base/BasePlugin';
 export * from './infrastructure/parsers/ConfigParser';
 export * from './infrastructure/adapters';
-export * from './infrastructure/patterns/CommonPatterns';
-export * from './infrastructure/security/CommonSecurityRules';
 
 // Shared Layer - Solo exportar tipos específicos para evitar duplicados
 export type { 
@@ -49,9 +46,20 @@ export type {
   ValidationContext,
   PluginMetadata
 } from './shared/types';
+
+// Rule System Types
+export type {
+  PraetorianRule,
+  StructureRule,
+  FormatRule,
+  SecurityRule,
+  SchemaRule,
+  RuleSet,
+  RuleConfig,
+  RuleLoadResult
+} from './shared/types/rules';
 export * from './shared/utils/ResultBuilder';
 export * from './shared/utils/EnvironmentManager';
 
 // Presentation Layer
-export * from './presentation/cli/cli';
-export * from './presentation/output/CLILogger'; 
+export * from './presentation/cli/cli'; 

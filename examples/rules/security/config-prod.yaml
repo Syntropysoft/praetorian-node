@@ -1,0 +1,155 @@
+# Production Configuration - SECURE EXAMPLE
+# This configuration passes all security rules
+
+app:
+  name: "MySecureApp"
+  version: "1.0.0"
+  environment: "production"
+
+# Security Configuration - Production grade security
+security:
+  authentication:
+    enabled: true
+    method: "oauth2"
+    # Using secure secret management
+    clientId: "${OAUTH_CLIENT_ID}"
+    clientSecret: "${OAUTH_CLIENT_SECRET}"
+    tokenExpiry: 3600
+    refreshTokenExpiry: 86400
+  
+  encryption:
+    enabled: true
+    algorithm: "AES-256-GCM"
+    keyRotation: true
+    keyRotationInterval: "30d"
+    # Encrypted configuration
+    configKey: "encrypted:${ENCRYPTED_CONFIG_KEY}"
+  
+  ssl:
+    enabled: true
+    certificate: "${SSL_CERT_PATH}"
+    privateKey: "${SSL_KEY_PATH}"
+    minTlsVersion: "1.2"
+    cipherSuites:
+      - "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384"
+      - "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256"
+
+  # Additional security headers
+  headers:
+    hsts: true
+    csp: "default-src 'self'"
+    xFrameOptions: "DENY"
+    xContentTypeOptions: "nosniff"
+
+# Database Configuration - Production secure
+database:
+  host: "${DB_HOST}"
+  port: 5432
+  name: "myapp_prod"
+  # Secure password management
+  password: "${DB_PASSWORD}"
+  ssl: true
+  encryption: true
+  connectionPool:
+    min: 5
+    max: 20
+    idleTimeout: 30000
+
+# API Configuration - Production secure
+api:
+  baseUrl: "https://api.example.com"
+  timeout: 30000
+  retries: 3
+  # Secure API key management
+  apiKey: "${API_KEY}"
+  
+  # Enhanced rate limiting for production
+  rateLimit:
+    enabled: true
+    requestsPerMinute: 1000
+    burstLimit: 100
+  
+  # API security
+  cors:
+    enabled: true
+    origins: ["https://app.example.com"]
+    credentials: true
+
+# Logging Configuration - Production secure
+logging:
+  level: "info"
+  format: "json"
+  # Comprehensive field exclusion
+  excludeFields:
+    - "password"
+    - "secret"
+    - "token"
+    - "apiKey"
+    - "authorization"
+  
+  # Secure log management
+  destination: "file"
+  path: "/var/log/app"
+  rotation: true
+  maxSize: "1GB"
+  maxFiles: 10
+  compression: true
+  
+  # Log encryption
+  encryption:
+    enabled: true
+    algorithm: "AES-256"
+
+# Monitoring Configuration - Production
+monitoring:
+  enabled: true
+  metrics:
+    enabled: true
+    endpoint: "/metrics"
+    port: 9090
+    # Secure metrics collection
+    authentication: true
+    apiKey: "${METRICS_API_KEY}"
+  
+  healthCheck:
+    enabled: true
+    endpoint: "/health"
+    interval: 30s
+  
+  alerting:
+    enabled: true
+    webhook: "${ALERT_WEBHOOK_URL}"
+    thresholds:
+      cpu: 80
+      memory: 85
+      disk: 90
+
+# Cache Configuration - Production secure
+cache:
+  enabled: true
+  type: "redis"
+  host: "${REDIS_HOST}"
+  port: 6379
+  # Secure cache authentication
+  password: "${REDIS_PASSWORD}"
+  ttl: 3600
+  encryption: true
+  ssl: true
+  
+  # Cache security
+  keyPrefix: "myapp:"
+  compression: true
+
+# Backup Configuration
+backup:
+  enabled: true
+  schedule: "0 2 * * *"  # Daily at 2 AM
+  retention: "30d"
+  encryption: true
+  # Secure backup storage
+  storage:
+    type: "s3"
+    bucket: "${BACKUP_BUCKET}"
+    region: "${AWS_REGION}"
+    accessKey: "${AWS_ACCESS_KEY}"
+    secretKey: "${AWS_SECRET_KEY}"

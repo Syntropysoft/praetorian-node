@@ -204,6 +204,7 @@ const createFailedRuleResult = (
 ): SecurityRuleResult => ({
   rule,
   passed: false,
+  matchedValue,
   error: {
     code: `SECURITY_${rule.id.toUpperCase()}`,
     message,

@@ -1,0 +1,63 @@
+version: 2
+updates:
+  # NPM dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "gabrielalejandrogomez"
+    assignees:
+      - "gabrielalejandrogomez"
+    commit-message:
+      prefix: "🔧"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "security"
+      - "automated"
+    ignore:
+      # Ignore major version updates for now (alpha phase)
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      # Group dev dependencies together
+      dev-dependencies:
+        patterns:
+          - "@types/*"
+          - "@stryker-mutator/*"
+          - "jest"
+          - "typescript"
+          - "eslint"
+          - "prettier"
+        update-types:
+          - "minor"
+          - "patch"
+      # Group CLI dependencies
+      cli-dependencies:
+        patterns:
+          - "@oclif/*"
+          - "chalk"
+          - "commander"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    commit-message:
+      prefix: "🚀"
+      include: "scope"
+    labels:
+      - "github-actions"
+      - "automated"

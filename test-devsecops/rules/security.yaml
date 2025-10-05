@@ -1,0 +1,10 @@
+# Team Security Rules
+rules:
+  - id: "no-hardcoded-secrets"
+    name: "No Hardcoded Secrets"
+  - id: "secure-defaults"
+    name: "Secure Default Values"
+  - id: "encryption-required"
+    name: "Encryption Required for Sensitive Data"
+  - id: "access-control"
+    name: "Proper Access Control Configuration"

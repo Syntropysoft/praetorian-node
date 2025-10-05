@@ -32,6 +32,11 @@ export default class Validate extends Command {
       description: 'Path to praetorian.yaml configuration file',
       default: 'praetorian.yaml',
     }),
+    pipeline: Flags.boolean({
+      char: 'p',
+      description: 'Pipeline mode - concise output for CI/CD',
+      default: false,
+    }),
     help: Flags.help({ char: 'h' }),
   };
 
@@ -79,7 +84,7 @@ export default class Validate extends Command {
       const result = await rule.execute(configFiles);
 
       // Display results
-      this.displayResults(result, flags.output);
+      this.displayResults(result, flags.output, flags.pipeline);
 
       // Exit with appropriate code
       if (!result.success) {
@@ -109,23 +114,64 @@ export default class Validate extends Command {
     return await fileReaderService.readFiles(valid);
   }
 
-  private displayResults(result: any, outputFormat: string) {
+  private displayResults(result: any, outputFormat: string, isPipelineMode: boolean = false) {
     if (outputFormat === 'json') {
       console.log(JSON.stringify(result, null, 2));
       return;
     }
 
-    // Pretty output
+    if (isPipelineMode) {
+      this.displayPipelineResults(result);
+      return;
+    }
+
+    this.displayUserResults(result);
+  }
+
+  private displayPipelineResults(result: any) {
+    // Pipeline mode - concise output for CI/CD
+    if (result.success) {
+      console.log(chalk.green('✅ PRAETORIAN_VALIDATION: PASSED'));
+    } else {
+      console.log(chalk.red('❌ PRAETORIAN_VALIDATION: FAILED'));
+      
+      // Show only critical errors for pipeline
+      const criticalErrors = result.errors?.slice(0, 5) || [];
+      for (const error of criticalErrors) {
+        console.log(chalk.red(`  • ${error.message}`));
+      }
+      
+      if (result.errors?.length > 5) {
+        console.log(chalk.red(`  • ... and ${result.errors.length - 5} more errors`));
+      }
+    }
+
+    // Pipeline summary - essential metrics only
+    if (result.metadata) {
+      const files = result.metadata.filesCompared || 0;
+      const errors = result.errors?.length || 0;
+      const warnings = result.warnings?.length || 0;
+      
+      console.log(chalk.blue(`PRAETORIAN_SUMMARY: files=${files}, errors=${errors}, warnings=${warnings}, duration=${result.metadata.duration || 0}ms`));
+    }
+  }
+
+  private displayUserResults(result: any) {
+    // User mode - detailed output with explanations
     console.log(chalk.blue('\n📊 Validation Results:\n'));
 
     if (result.success) {
       console.log(chalk.green('✅ All files have consistent keys!'));
+      console.log(chalk.gray('   Your configuration files are properly synchronized across environments.'));
     } else {
       console.log(chalk.red('❌ Key inconsistencies found:'));
+      console.log(chalk.gray('   The following keys are missing in some configuration files:'));
       
       for (const error of result.errors) {
         console.log(chalk.red(`  • ${error.message}`));
       }
+      
+      console.log(chalk.yellow('\n💡 Tip: Use --pipeline flag for concise CI/CD output'));
     }
 
     if (result.warnings && result.warnings.length > 0) {
@@ -151,6 +197,12 @@ export default class Validate extends Command {
       console.log(`  • Total keys: ${result.metadata.totalKeys || 0}`);
       console.log(`  • Empty keys: ${result.metadata.emptyKeys || 0}`);
       console.log(`  • Duration: ${result.metadata.duration || 0}ms`);
+      
+      if (result.success) {
+        console.log(chalk.green('\n🎉 Validation completed successfully!'));
+      } else {
+        console.log(chalk.red('\n🔧 Fix the inconsistencies above and run validation again.'));
+      }
     }
   }
 } 

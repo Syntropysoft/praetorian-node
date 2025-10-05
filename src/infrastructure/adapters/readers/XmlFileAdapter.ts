@@ -1,69 +1,37 @@
+import * as xml2js from 'xml2js';
 import { AbstractFileAdapter } from '../base/AbstractFileAdapter';
+
+/**
+ * XML File Adapter - Functional Programming
+ * 
+ * Single Responsibility: Parse XML configuration files only
+ * Uses xml2js library for robust XML parsing
+ */
 
 export class XmlFileAdapter extends AbstractFileAdapter {
   canHandle(filePath: string): boolean {
-    return filePath.endsWith('.xml');
+    // Guard clause: no file path
+    if (!filePath || typeof filePath !== 'string') {
+      return false;
+    }
+
+    return isXmlFile(filePath);
   }
 
   async read(filePath: string): Promise<Record<string, any>> {
+    // Guard clause: no file path
+    if (!filePath || typeof filePath !== 'string') {
+      throw new Error('File path is required');
+    }
+
     this.validateFileExists(filePath);
     
     try {
       const content = await this.readFileContent(filePath);
-      return this.parseXmlContent(content);
+      return await parseXmlContent(content);
     } catch (error) {
       throw new Error(`Failed to parse XML file ${filePath}: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
-  }
-
-  private parseXmlContent(content: string): Record<string, any> {
-    // Simple XML parser for configuration files
-    // This is a basic implementation - for complex XML, consider using a library like xml2js
-    
-    const result: Record<string, any> = {};
-    const lines = content.split('\n');
-    
-    for (const line of lines) {
-      const trimmed = line.trim();
-      
-      // Skip empty lines, comments, and XML declarations
-      if (!trimmed || 
-          trimmed.startsWith('<!--') || 
-          trimmed.startsWith('<?xml') ||
-          trimmed.startsWith('<!DOCTYPE')) {
-        continue;
-      }
-      
-      // Parse simple key-value pairs like <key>value</key>
-      const match = trimmed.match(/<(\w+)>(.*?)<\/\1>/);
-      if (match) {
-        const [, key, value] = match;
-        result[key] = this.parseValue(value.trim());
-      }
-      
-      // Parse attributes like <key value="something"/>
-      const attrMatch = trimmed.match(/<(\w+)\s+value="([^"]*)"\s*\/>/);
-      if (attrMatch) {
-        const [, key, value] = attrMatch;
-        result[key] = this.parseValue(value);
-      }
-    }
-    
-    return result;
-  }
-
-  private parseValue(value: string): any {
-    // Parse booleans
-    if (value === 'true') return true;
-    if (value === 'false') return false;
-    
-    // Parse numbers
-    if (!isNaN(Number(value))) {
-      return Number(value);
-    }
-    
-    // Return as string
-    return value;
   }
 
   getFormat(): string {
@@ -73,4 +41,39 @@ export class XmlFileAdapter extends AbstractFileAdapter {
   getSupportedExtensions(): string[] {
     return ['.xml'];
   }
-} 
+}
+
+/**
+ * Pure function to check if file is XML
+ */
+const isXmlFile = (filePath: string): boolean => {
+  // Guard clause: no file path
+  if (!filePath) {
+    return false;
+  }
+
+  return filePath.endsWith('.xml');
+};
+
+/**
+ * Pure function to parse XML content using xml2js
+ */
+export const parseXmlContent = async (content: string): Promise<Record<string, any>> => {
+  // Guard clause: no content
+  if (!content || typeof content !== 'string') {
+    return {};
+  }
+
+  try {
+    const parser = new xml2js.Parser({
+      explicitArray: false,
+      mergeAttrs: true,
+      explicitRoot: false
+    });
+
+    const result = await parser.parseStringPromise(content);
+    return result || {};
+  } catch (error) {
+    throw new Error(`XML parsing failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
+}; 

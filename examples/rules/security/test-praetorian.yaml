@@ -1,0 +1,5 @@
+# Praetorian configuration for simple test
+version: "1.0"
+files:
+  - "test-simple.yaml"
+  - "test-simple2.yaml"

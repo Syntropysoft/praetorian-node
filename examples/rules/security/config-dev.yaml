@@ -1,0 +1,90 @@
+# Development Configuration - SECURE EXAMPLE
+# This configuration passes all security rules
+
+app:
+  name: "MySecureApp"
+  version: "1.0.0"
+  environment: "development"
+
+# Security Configuration - All secure
+security:
+  authentication:
+    enabled: true
+    method: "oauth2"
+    # No hardcoded secrets - using environment variables
+    clientId: "${OAUTH_CLIENT_ID}"
+    clientSecret: "${OAUTH_CLIENT_SECRET}"
+  
+  encryption:
+    enabled: true
+    algorithm: "AES-256-GCM"
+    # Encrypted configuration key
+    configKey: "encrypted:${ENCRYPTED_CONFIG_KEY}"
+  
+  ssl:
+    enabled: true
+    certificate: "${SSL_CERT_PATH}"
+    privateKey: "${SSL_KEY_PATH}"
+
+# Database Configuration - Secure
+database:
+  host: "localhost"
+  port: 5432
+  name: "myapp_dev"
+  # No hardcoded password
+  password: "${DB_PASSWORD}"
+  ssl: true
+  encryption: true
+
+# API Configuration - Secure
+api:
+  baseUrl: "https://api-dev.example.com"
+  timeout: 30000
+  retries: 3
+  # Using environment variable for API key
+  apiKey: "${API_KEY}"
+  
+  # Rate limiting configuration
+  rateLimit:
+    enabled: true
+    requestsPerMinute: 100
+
+# Logging Configuration - Secure
+logging:
+  level: "debug"
+  format: "json"
+  # No sensitive data in logs
+  excludeFields:
+    - "password"
+    - "secret"
+    - "token"
+  
+  # Secure log storage
+  destination: "file"
+  path: "/var/log/app"
+  rotation: true
+  maxSize: "100MB"
+
+# Monitoring Configuration
+monitoring:
+  enabled: true
+  metrics:
+    enabled: true
+    endpoint: "/metrics"
+    port: 9090
+  
+  healthCheck:
+    enabled: true
+    endpoint: "/health"
+    interval: 30s
+
+# Cache Configuration
+cache:
+  enabled: true
+  type: "redis"
+  host: "localhost"
+  port: 6379
+  # Using environment variable for cache password
+  password: "${REDIS_PASSWORD}"
+  ttl: 3600
+  encryption: true

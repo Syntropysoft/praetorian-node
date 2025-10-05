@@ -1,0 +1,10 @@
+# Company Compliance Rules
+rules:
+  - id: "gdpr-compliance"
+    name: "GDPR Compliance Check"
+  - id: "audit-trail"
+    name: "Audit Trail Required"
+  - id: "data-retention"
+    name: "Data Retention Policy"
+  - id: "privacy-by-design"
+    name: "Privacy by Design Principles"

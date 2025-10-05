@@ -2,6 +2,8 @@
  * Core types for SyntropySoft Praetorian
  */
 
+export type ValidationSeverity = 'error' | 'warning' | 'info';
+
 export interface ValidationResult {
   success: boolean;
   errors: ValidationError[];

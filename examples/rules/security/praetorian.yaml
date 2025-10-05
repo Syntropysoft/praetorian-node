@@ -1,0 +1,89 @@
+# Security Rules Example
+# This example demonstrates how to use Praetorian's built-in security rules
+
+name: "Security Rules Example"
+version: "1.0.0"
+description: "Example showing security validation rules for configuration files"
+
+# Files to validate
+files:
+  - "config-dev.yaml"
+  - "config-prod.yaml"
+  - "config-staging.yaml"
+
+# Security-specific validation options
+strict: true
+
+# Rules configuration
+rules:
+  # Secret Detection Rules
+  - id: "no-hardcoded-secrets"
+    name: "No Hardcoded Secrets"
+    description: "Detect hardcoded API keys, passwords, and tokens"
+    category: "security"
+    severity: "error"
+    enabled: true
+    config:
+      patterns:
+        - "api[_-]?key"
+        - "password"
+        - "secret"
+        - "token"
+        - "auth[_-]?key"
+      excludePatterns:
+        - "example"
+        - "placeholder"
+        - "your[_-]?key[_-]?here"
+
+  # Permission Validation Rules
+  - id: "secure-permissions"
+    name: "Secure File Permissions"
+    description: "Ensure configuration files have secure permissions"
+    category: "security"
+    severity: "warning"
+    enabled: true
+    config:
+      maxPermissions: "644"
+      sensitiveFiles:
+        - "*.key"
+        - "*.pem"
+        - "*secret*"
+        - "*password*"
+      sensitivePermissions: "600"
+
+  # Encryption Rules
+  - id: "encryption-required"
+    name: "Encryption Required"
+    description: "Ensure sensitive data is encrypted"
+    category: "security"
+    severity: "error"
+    enabled: true
+    config:
+      encryptedFields:
+        - "password"
+        - "secret"
+        - "apiKey"
+        - "token"
+      encryptionIndicators:
+        - "encrypted"
+        - "cipher"
+        - "hash"
+
+# Ignore keys that are intentionally exposed (like public keys)
+ignore_keys:
+  - "publicKey"
+  - "public_key"
+  - "clientId"
+  - "client_id"
+
+# Required keys for security compliance
+required_keys:
+  - "security"
+  - "encryption"
+  - "authentication"
+
+# Forbidden keys that should never appear
+forbidden_keys:
+  - "rootPassword"
+  - "adminPassword"
+  - "masterKey"

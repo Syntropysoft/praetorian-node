@@ -1,6 +1,6 @@
 {
   "name": "@syntropysoft/praetorian",
-  "version": "0.0.3-alpha.1",
+  "version": "0.0.4-alpha",
   "description": "Praetorian CLI – A universal multi-environment configuration validator for DevSecOps teams. Validate, compare, and secure YAML/ENV files with ease.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,7 +17,6 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "tsx src/presentation/cli/simple-cli.ts",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
@@ -68,6 +67,7 @@
     "@types/jest": "^30.0.0",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^18.0.0",
+    "@types/xml2js": "^0.4.14",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "eslint": "^8.0.0",
@@ -83,6 +83,8 @@
     "@oclif/plugin-help": "^6.2.32",
     "chalk": "^4.1.2",
     "inquirer": "^8.2.6",
+    "toml": "^3.0.0",
+    "xml2js": "^0.6.2",
     "yaml": "^2.3.0"
   },
   "engines": {

@@ -1,0 +1,83 @@
+# INSECURE Configuration - FAILS Security Rules
+# This configuration demonstrates what NOT to do
+
+app:
+  name: "InsecureApp"
+  version: "1.0.0"
+  environment: "development"
+
+# Security Configuration - INSECURE EXAMPLES
+security:
+  authentication:
+    enabled: true
+    method: "basic"  # Weak authentication
+    # HARDCODED SECRETS - This will trigger security rules
+    clientId: "my-client-id-12345"
+    clientSecret: "super-secret-password-123"
+    apiKey: "sk-1234567890abcdef1234567890abcdef"
+    adminPassword: "admin123"  # Forbidden key
+    rootPassword: "root123"    # Forbidden key
+  
+  encryption:
+    enabled: false  # No encryption - security risk
+    algorithm: "DES"  # Weak encryption
+  
+  ssl:
+    enabled: false  # No SSL - major security risk
+    # No certificates configured
+
+# Database Configuration - INSECURE
+database:
+  host: "localhost"
+  port: 5432
+  name: "myapp"
+  # HARDCODED PASSWORD - Security violation
+  password: "database-password-123"
+  ssl: false  # No SSL
+  encryption: false  # No encryption
+  # Missing connection pooling
+
+# API Configuration - INSECURE
+api:
+  baseUrl: "http://api.example.com"  # HTTP instead of HTTPS
+  timeout: 30000
+  retries: 3
+  # HARDCODED API KEY
+  apiKey: "pk_live_1234567890abcdef1234567890abcdef"
+  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+  
+  # No rate limiting
+  rateLimit:
+    enabled: false
+
+# Logging Configuration - INSECURE
+logging:
+  level: "debug"
+  format: "text"  # Not structured
+  # LOGGING SENSITIVE DATA - Security risk
+  includeFields:
+    - "password"
+    - "secret"
+    - "token"
+    - "apiKey"
+  
+  destination: "console"  # Not secure for production
+  # No log rotation or encryption
+
+# Monitoring Configuration - INSECURE
+monitoring:
+  enabled: false  # No monitoring
+  # No health checks
+  # No metrics collection
+
+# Cache Configuration - INSECURE
+cache:
+  enabled: true
+  type: "memory"  # Insecure for production
+  # No authentication
+  # No encryption
+  # No SSL
+
+# Missing backup configuration
+# Missing security headers
+# Missing input validation

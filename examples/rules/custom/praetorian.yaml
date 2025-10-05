@@ -1,0 +1,125 @@
+# Custom Rules Example
+# This example demonstrates how to create and use custom validation rules
+
+name: "Custom Rules Example"
+version: "1.0.0"
+description: "Example showing custom validation rules for specific business requirements"
+
+# Files to validate
+files:
+  - "config-dev.yaml"
+  - "config-prod.yaml"
+  - "config-staging.yaml"
+
+# Custom rules configuration
+strict: true
+
+# Custom Rules
+rules:
+  # Business Logic Rules
+  - id: "business-hours-validation"
+    name: "Business Hours Validation"
+    description: "Ensure business hours are configured correctly"
+    category: "custom"
+    severity: "warning"
+    enabled: true
+    config:
+      businessHours:
+        start: "09:00"
+        end: "17:00"
+        timezone: "UTC"
+        days: ["monday", "tuesday", "wednesday", "thursday", "friday"]
+      validation:
+        required: true
+        format: "HH:mm"
+        timezone: "required"
+
+  # Environment-Specific Rules
+  - id: "environment-specific"
+    name: "Environment Specific Validation"
+    description: "Validate environment-specific configurations"
+    category: "custom"
+    severity: "error"
+    enabled: true
+    config:
+      environments:
+        production:
+          requiredKeys: ["ssl", "monitoring", "backup"]
+          forbiddenKeys: ["debug", "test-data"]
+          minReplicas: 3
+        staging:
+          requiredKeys: ["ssl", "monitoring"]
+          allowedKeys: ["debug", "test-data"]
+          minReplicas: 1
+        development:
+          allowedKeys: ["debug", "test-data", "mock-services"]
+          optionalKeys: ["ssl", "monitoring"]
+
+  # API Versioning Rules
+  - id: "api-versioning"
+    name: "API Versioning Validation"
+    description: "Ensure API versioning is properly configured"
+    category: "custom"
+    severity: "warning"
+    enabled: true
+    config:
+      versioning:
+        required: true
+        format: "semver"
+        minVersion: "1.0.0"
+        deprecatedVersions: ["0.x"]
+      endpoints:
+        required: ["/health", "/metrics", "/version"]
+        deprecated: ["/legacy"]
+
+  # Feature Flag Rules
+  - id: "feature-flags"
+    name: "Feature Flag Validation"
+    description: "Validate feature flag configuration"
+    category: "custom"
+    severity: "info"
+    enabled: true
+    config:
+      featureFlags:
+        required: true
+        naming: "kebab-case"
+        environments:
+          production:
+            allowedFlags: ["gradual-rollout", "a-b-test"]
+            forbiddenFlags: ["experimental", "beta"]
+          staging:
+            allowedFlags: ["experimental", "beta", "gradual-rollout"]
+          development:
+            allowedFlags: ["experimental", "beta", "alpha"]
+
+  # Cost Optimization Rules
+  - id: "cost-optimization"
+    name: "Cost Optimization"
+    description: "Ensure cost-effective resource allocation"
+    category: "custom"
+    severity: "warning"
+    enabled: true
+    config:
+      resources:
+        maxCpu: "8"
+        maxMemory: "16Gi"
+        maxStorage: "100Gi"
+        autoScaling: true
+      monitoring:
+        costAlerts: true
+        usageTracking: true
+        optimization: true
+
+# Custom required keys
+required_keys:
+  - "business"
+  - "features"
+  - "environment"
+  - "versioning"
+
+# Custom forbidden keys
+forbidden_keys:
+  - "hardcoded-values"
+  - "production-secrets"
+  - "debug-data"
+  - "test-credentials"

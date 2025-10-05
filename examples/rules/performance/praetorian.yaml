@@ -1,0 +1,108 @@
+# Performance Rules Example
+# This example demonstrates performance validation rules for optimal configuration
+
+name: "Performance Rules Example"
+version: "1.0.0"
+description: "Example showing performance validation rules for optimal system performance"
+
+# Files to validate
+files:
+  - "config-dev.yaml"
+  - "config-prod.yaml"
+  - "config-staging.yaml"
+
+# Performance-specific validation options
+strict: false  # Performance issues are usually warnings
+
+# Rules configuration
+rules:
+  # Database Performance Rules
+  - id: "database-performance"
+    name: "Database Performance Optimization"
+    description: "Ensure database configuration is optimized for performance"
+    category: "performance"
+    severity: "warning"
+    enabled: true
+    config:
+      connectionPool:
+        minConnections: 5
+        maxConnections: 100
+        idleTimeout: 30000
+      queryOptimization:
+        enableQueryCache: true
+        slowQueryThreshold: 1000
+        maxQueryTime: 5000
+      indexing:
+        required: true
+        compositeIndexes: true
+
+  # Cache Performance Rules
+  - id: "cache-performance"
+    name: "Cache Performance Optimization"
+    description: "Ensure cache configuration is optimized"
+    category: "performance"
+    severity: "warning"
+    enabled: true
+    config:
+      ttl:
+        min: 300
+        max: 86400
+      memory:
+        maxUsage: "80%"
+        evictionPolicy: "LRU"
+      clustering:
+        enabled: true
+        replication: true
+
+  # API Performance Rules
+  - id: "api-performance"
+    name: "API Performance Optimization"
+    description: "Ensure API configuration is optimized for performance"
+    category: "performance"
+    severity: "warning"
+    enabled: true
+    config:
+      timeout:
+        max: 30000
+        recommended: 5000
+      rateLimiting:
+        enabled: true
+        burstProtection: true
+      compression:
+        enabled: true
+        algorithms: ["gzip", "brotli"]
+      connectionPooling:
+        enabled: true
+        keepAlive: true
+
+  # Resource Optimization Rules
+  - id: "resource-optimization"
+    name: "Resource Optimization"
+    description: "Ensure resource usage is optimized"
+    category: "performance"
+    severity: "warning"
+    enabled: true
+    config:
+      memory:
+        maxHeap: "4GB"
+        gcOptimization: true
+      cpu:
+        threadPool: true
+        asyncProcessing: true
+      disk:
+        ioOptimization: true
+        caching: true
+
+# Performance-related required keys
+required_keys:
+  - "performance"
+  - "cache"
+  - "database"
+  - "monitoring"
+
+# Performance anti-patterns to avoid
+forbidden_keys:
+  - "synchronousProcessing"
+  - "blockingOperations"
+  - "memoryLeaks"
+  - "inefficientQueries"

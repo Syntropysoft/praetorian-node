@@ -1,0 +1,25 @@
+# Global code owners
+* @gabrielalejandrogomez
+
+# Core CLI functionality
+/src/commands/ @gabrielalejandrogomez
+/src/presentation/cli/ @gabrielalejandrogomez
+
+# Security and validation features
+/src/application/validators/ @gabrielalejandrogomez
+/src/infrastructure/plugins/ @gabrielalejandrogomez
+
+# Configuration and parsing
+/src/infrastructure/parsers/ @gabrielalejandrogomez
+/src/infrastructure/adapters/ @gabrielalejandrogomez
+
+# Documentation
+README.md @gabrielalejandrogomez
+examples/ @gabrielalejandrogomez
+
+# CI/CD and workflows
+.github/ @gabrielalejandrogomez
+
+# Package configuration
+package.json @gabrielalejandrogomez
+package-lock.json @gabrielalejandrogomez

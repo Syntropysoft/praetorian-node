@@ -1,0 +1,5 @@
+# Praetorian configuration for success test
+version: "1.0"
+files:
+  - "success-test1.yaml"
+  - "success-test2.yaml"

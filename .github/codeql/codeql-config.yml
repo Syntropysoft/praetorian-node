@@ -1,0 +1,35 @@
+name: "Praetorian CodeQL Config"
+
+# Configure CodeQL queries
+queries:
+  # Use default security queries
+  - uses: security-and-quality
+  
+  # Additional TypeScript/JavaScript queries
+  - uses: javascript-security-and-quality
+  
+  # Custom queries for CLI applications
+  - name: cli-security
+    uses: ./.github/codeql/custom-queries
+
+# Paths to exclude from analysis
+paths-ignore:
+  - "node_modules/"
+  - "dist/"
+  - "coverage/"
+  - "reports/"
+  - "tmp/"
+  - "examples/"
+  - "test-devsecops/"
+  - "*.log"
+  - "*.tmp"
+
+# Paths to include in analysis
+paths:
+  - "src/"
+  - "tests/"
+  - "*.ts"
+  - "*.js"
+  - "*.json"
+  - "*.yml"
+  - "*.yaml"

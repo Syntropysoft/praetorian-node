@@ -1,0 +1,146 @@
+# Praetorian DevSecOps Configuration
+# Declarative configuration for security, operations, and development teams
+# Version: 1.0.0
+
+version: "1.0.0"
+
+# Project information for team visibility
+project:
+  name: "my-application"
+  description: "Application configuration validation"
+  team: "DevSecOps"
+  repository: "https://github.com/company/my-application"
+
+# Rule sources configuration
+# Each source defines where rules come from
+sources:
+  # Core Praetorian rules (always available)
+  core:
+    type: "core"
+    name: "Praetorian Core Rules"
+    description: "Built-in security and configuration rules"
+    enabled: true
+    priority: 1
+
+  # Local team rules
+  team-security:
+    type: "local"
+    name: "Team Security Rules"
+    description: "Custom security rules for our team"
+    path: "./rules/security/*.yaml"
+    enabled: true
+    priority: 5
+
+  # Company-wide rules
+  company-compliance:
+    type: "remote"
+    name: "Company Compliance Rules"
+    description: "Company-wide compliance and security rules"
+    url: "https://security.company.com/rules/compliance.yaml"
+    enabled: true
+    priority: 3
+
+  # External security standards
+  owasp-top10:
+    type: "remote"
+    name: "OWASP Top 10 Rules"
+    description: "OWASP Top 10 security validation rules"
+    url: "https://standards.owasp.org/rules/top10.yaml"
+    enabled: true
+    priority: 2
+
+  # NPM package rules (for reusable rule sets)
+  industry-standards:
+    type: "package"
+    name: "Industry Standards"
+    description: "Industry-specific security standards"
+    package: "@company/security-standards"
+    enabled: true
+    priority: 2
+
+  # Git repository rules (for complex rule sets)
+  security-team:
+    type: "git"
+    name: "Security Team Rules"
+    description: "Advanced rules from security team"
+    repo: "git@github.com:company/security-rules.git"
+    branch: "main"
+    gitPath: "validation/"
+    enabled: true
+    priority: 4
+
+# Environment-specific configurations
+environments:
+  # Development environment - minimal rules for speed
+  dev:
+    name: "Development"
+    sources:
+      - "core"
+      - "team-security"
+    disabledRules:
+      - "strict-security-validation"
+      - "production-only-checks"
+    overrides:
+      "debug-mode": "Enable Debug Mode"
+
+  # Staging environment - more comprehensive rules
+  staging:
+    name: "Staging"
+    sources:
+      - "core"
+      - "team-security"
+      - "company-compliance"
+    disabledRules:
+      - "production-only-checks"
+    overrides:
+      "test-data-allowed": "Allow Test Data"
+
+  # Production environment - all security rules
+  prod:
+    name: "Production"
+    sources:
+      - "core"
+      - "team-security"
+      - "company-compliance"
+      - "owasp-top10"
+      - "industry-standards"
+      - "security-team"
+    disabledRules: []
+    overrides:
+      "strict-validation": "Enable Strict Validation"
+      "audit-logging": "Enable Audit Logging"
+
+  # CI/CD pipeline environment
+  ci:
+    name: "CI/CD Pipeline"
+    sources:
+      - "core"
+      - "company-compliance"
+    disabledRules:
+      - "interactive-validation"
+    overrides:
+      "automated-mode": "Automated Validation Mode"
+
+# Global rule overrides (apply to all environments)
+globalOverrides:
+  "team-name": "DevSecOps Team"
+  "validation-timeout": "30s"
+
+# Global disabled rules (never load these)
+globalDisabled:
+  - "deprecated-rule-1"
+  - "experimental-rule"
+
+# Validation settings
+validation:
+  # Validate configuration on load
+  validateOnLoad: true
+  # Fail if required sources are missing
+  failOnMissingSource: true
+  # Warn about duplicate rules
+  warnOnDuplicates: true
+
+# Example usage in pipeline:
+# praetorian validate --env=prod --config=./praetorian.yaml
+# praetorian validate --env=dev --rules=security
+# praetorian validate --env=staging --rules=compliance

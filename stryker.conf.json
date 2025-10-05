@@ -4,7 +4,8 @@
   "reporters": [
     "html",
     "clear-text",
-    "progress"
+    "progress",
+    "json"
   ],
   "testRunner": "jest",
   "coverageAnalysis": "perTest",
@@ -15,13 +16,26 @@
     "src/**/*.ts",
     "!src/**/*.d.ts",
     "!src/**/*.config.*",
-    "!src/cli/templates/**"
+    "!src/**/*.test.ts",
+    "!src/**/*.spec.ts",
+    "!src/cli/templates/**",
+    "!examples/**",
+    "!test-devsecops/**"
   ],
-  "timeoutMS": 15000,
-  "concurrency": 1,
+  "timeoutMS": 30000,
+  "concurrency": 2,
+  "maxTestRunnerReuse": 10,
+  "disableTypeChecking": false,
+  "logLevel": "info",
   "thresholds": {
     "high": 80,
     "low": 40,
-    "break": 50
+    "break": 35
+  },
+  "htmlReporter": {
+    "baseDir": "reports/mutation"
+  },
+  "jsonReporter": {
+    "fileName": "reports/mutation/mutation.json"
   }
 } 

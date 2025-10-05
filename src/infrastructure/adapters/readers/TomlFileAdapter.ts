@@ -1,78 +1,37 @@
+import * as toml from 'toml';
 import { AbstractFileAdapter } from '../base/AbstractFileAdapter';
+
+/**
+ * TOML File Adapter - Functional Programming
+ * 
+ * Single Responsibility: Parse TOML configuration files only
+ * Uses toml library for robust TOML parsing
+ */
 
 export class TomlFileAdapter extends AbstractFileAdapter {
   canHandle(filePath: string): boolean {
-    return filePath.endsWith('.toml');
+    // Guard clause: no file path
+    if (!filePath || typeof filePath !== 'string') {
+      return false;
+    }
+
+    return isTomlFile(filePath);
   }
 
   async read(filePath: string): Promise<Record<string, any>> {
+    // Guard clause: no file path
+    if (!filePath || typeof filePath !== 'string') {
+      throw new Error('File path is required');
+    }
+
     this.validateFileExists(filePath);
     
     try {
       const content = await this.readFileContent(filePath);
-      return this.parseTomlContent(content);
+      return parseTomlContent(content);
     } catch (error) {
       throw new Error(`Failed to parse TOML file ${filePath}: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
-  }
-
-  private parseTomlContent(content: string): Record<string, any> {
-    const result: Record<string, any> = {};
-    const lines = content.split('\n');
-    let currentSection: string | null = null;
-    
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i].trim();
-      
-      // Skip empty lines and comments
-      if (!line || line.startsWith('#')) {
-        continue;
-      }
-      
-      // Handle section headers [section]
-      if (line.startsWith('[') && line.endsWith(']')) {
-        currentSection = line.slice(1, -1);
-        if (!result[currentSection]) {
-          result[currentSection] = {};
-        }
-        continue;
-      }
-      
-      // Handle key-value pairs
-      const equalIndex = line.indexOf('=');
-      if (equalIndex > 0) {
-        const key = line.substring(0, equalIndex).trim();
-        const value = line.substring(equalIndex + 1).trim();
-        
-        if (currentSection) {
-          result[currentSection][key] = this.parseValue(value);
-        } else {
-          result[key] = this.parseValue(value);
-        }
-      }
-    }
-    
-    return result;
-  }
-
-  private parseValue(value: string): any {
-    // Remove quotes
-    if ((value.startsWith('"') && value.endsWith('"')) || 
-        (value.startsWith("'") && value.endsWith("'"))) {
-      return value.slice(1, -1);
-    }
-    
-    // Parse booleans
-    if (value === 'true') return true;
-    if (value === 'false') return false;
-    
-    // Parse numbers
-    if (!isNaN(Number(value))) {
-      return Number(value);
-    }
-    
-    // Return as string
-    return value;
   }
 
   getFormat(): string {
@@ -82,4 +41,33 @@ export class TomlFileAdapter extends AbstractFileAdapter {
   getSupportedExtensions(): string[] {
     return ['.toml'];
   }
-} 
+}
+
+/**
+ * Pure function to check if file is TOML
+ */
+const isTomlFile = (filePath: string): boolean => {
+  // Guard clause: no file path
+  if (!filePath) {
+    return false;
+  }
+
+  return filePath.endsWith('.toml');
+};
+
+/**
+ * Pure function to parse TOML content using toml library
+ */
+export const parseTomlContent = (content: string): Record<string, any> => {
+  // Guard clause: no content
+  if (!content || typeof content !== 'string') {
+    return {};
+  }
+
+  try {
+    const result = toml.parse(content);
+    return result || {};
+  } catch (error) {
+    throw new Error(`TOML parsing failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
+};

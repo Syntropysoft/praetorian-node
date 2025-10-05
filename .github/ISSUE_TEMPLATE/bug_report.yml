@@ -1,0 +1,120 @@
+name: 🐛 Bug Report
+description: Report a bug or unexpected behavior
+title: "[BUG]: "
+labels: ["bug", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out the form below with as much detail as possible.
+
+  - type: input
+    id: version
+    attributes:
+      label: Praetorian Version
+      description: What version of Praetorian are you using?
+      placeholder: e.g., 0.0.4-alpha
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      description: What operating system are you running?
+      options:
+        - Linux
+        - macOS
+        - Windows
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: node-version
+    attributes:
+      label: Node.js Version
+      description: What version of Node.js are you using?
+      options:
+        - 16.x
+        - 18.x
+        - 20.x
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is
+      placeholder: Describe the bug...
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the behavior
+      placeholder: |
+        1. Go to '...'
+        2. Run command '...'
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What you expected to happen
+      placeholder: Describe what should happen...
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened
+      placeholder: Describe what actually happened...
+    validations:
+      required: true
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Configuration Files
+      description: Paste your praetorian.yaml and any relevant config files (remove sensitive data)
+      placeholder: |
+        ```yaml
+        # praetorian.yaml
+        version: "1.0"
+        files:
+          - "config.yaml"
+        ```
+      render: yaml
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error Logs
+      description: Paste any error logs or console output
+      placeholder: Paste error logs here...
+      render: shell
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      description: Please confirm the following
+      options:
+        - label: I have searched existing issues to avoid duplicates
+          required: true
+        - label: I have provided all the requested information
+          required: true
+        - label: I have removed any sensitive data from my configuration
+          required: true

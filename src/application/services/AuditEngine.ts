@@ -19,7 +19,7 @@
 
 import { AuditResult, ValidationContext, ValidationResult, AuditSummary } from '../../shared/types';
 import { Validator } from './Validator';
-import { AuditCalculator } from './AuditCalculator';
+import { calculateAuditSummary, calculateMetrics, calculateScore, calculateGrade, generateRecommendations } from './AuditCalculator';
 import { SecurityAuditor } from '../../infrastructure/plugins/SecurityAuditor';
 import { ComplianceAuditor } from '../../infrastructure/plugins/ComplianceAuditor';
 import { PerformanceAuditor } from '../../infrastructure/plugins/PerformanceAuditor';
@@ -32,7 +32,6 @@ interface AuditEngineOptions {
 
 export class AuditEngine {
   private validator: Validator;
-  private calculator: AuditCalculator;
   private securityAuditor: SecurityAuditor;
   private complianceAuditor: ComplianceAuditor;
   private performanceAuditor: PerformanceAuditor;
@@ -51,7 +50,6 @@ export class AuditEngine {
       strict: this.options.strict
     });
     
-    this.calculator = new AuditCalculator();
     this.securityAuditor = new SecurityAuditor();
     this.complianceAuditor = new ComplianceAuditor();
     this.performanceAuditor = new PerformanceAuditor();
@@ -84,7 +82,7 @@ export class AuditEngine {
         auditResults = await this.runAllAudits(context);
       }
       
-      const summary = this.calculator.calculateSummary(auditResults);
+      const summary = calculateAuditSummary(auditResults);
       const result = this.buildAuditResult(auditResults, summary, startTime);
       
       // Add properties expected by tests

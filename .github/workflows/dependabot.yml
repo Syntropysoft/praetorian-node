@@ -1,0 +1,39 @@
+name: 🤖 Dependabot Auto-merge
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  dependabot:
+    name: 🤖 Dependabot PR
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🧪 Run tests
+        run: npm test -- --watchAll=false
+
+      - name: 🔧 Build project
+        run: npm run build
+
+      - name: 🤖 Auto-merge Dependabot PR
+        if: github.actor == 'dependabot[bot]'
+        uses: fastify/github-action-merge-dependabot@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          target: minor
+          merge-method: squash
+          approval: ${{ github.actor == 'dependabot[bot]' }}
