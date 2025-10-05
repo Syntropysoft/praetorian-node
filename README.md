@@ -11,7 +11,7 @@
 [![license](https://img.shields.io/npm/l/@syntropysoft/praetorian?color=blue&style=flat-square)](https://github.com/Syntropysoft/praetorian-node/blob/main/LICENSE)  
 [![build status](https://img.shields.io/github/actions/workflow/status/Syntropysoft/praetorian-node/ci.yml?branch=main&style=flat-square)](https://github.com/Syntropysoft/praetorian-node/actions/workflows/ci.yml)  
 [![CodeQL](https://github.com/Syntropysoft/praetorian-node/actions/workflows/codeql.yml/badge.svg)](https://github.com/Syntropysoft/praetorian-node/actions/workflows/codeql.yml)  
-[![Dependabot](https://api.dependabot.com/badges/status?dependency-manager=npm&package-manager=npm&repository=Syntropysoft/praetorian-node)](https://dependabot.com)  
+[![Dependabot](https://img.shields.io/badge/dependabot-enabled-blue?style=flat-square)](https://dependabot.com)  
 [![Mutation Score](https://img.shields.io/badge/mutation%20score-38.32%25-brightgreen?style=flat-square)](https://stryker-mutator.io)  
 [![Test Coverage](https://img.shields.io/badge/test%20coverage-1225%20tests-brightgreen?style=flat-square)](https://github.com/Syntropysoft/praetorian-node/actions/workflows/ci.yml)  
 [![Bundle Size](https://img.shields.io/bundlephobia/min/@syntropysoft/praetorian?style=flat-square)](https://bundlephobia.com/package/@syntropysoft/praetorian)  
